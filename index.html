@@ -25,14 +25,8 @@
   --rose-soft:#fbe3e1;
   --shadow:0 22px 60px rgba(20,41,63,.18), 0 2px 8px rgba(20,41,63,.06);
 }
-
 *{box-sizing:border-box;}
-
-/* FIX #1: các phần tử có thuộc tính [hidden] phải luôn bị ẩn.
-   Trước đây #overview/#notesPanel dùng display:flex nên ghi đè
-   [hidden] do specificity của ID cao hơn attribute selector. */
 [hidden]{display:none !important;}
-
 html,body{height:100%;margin:0;}
 body{
   font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
@@ -42,8 +36,6 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
-
-/* FIX #5: tránh double-tap zoom trên các phần tử tương tác (mobile) */
 .cbtn,.opt,.btn-reveal,.xbtn,.thumb,#btnStart{touch-action:manipulation;}
 
 /* ============================================================
@@ -58,7 +50,7 @@ body{
 }
 
 /* ============================================================
-   2. SLIDE — A4 LANDSCAPE (297×210mm ≈ 1.414:1)
+   2. SLIDE — A4 LANDSCAPE
    ============================================================ */
 .slide{
   position:absolute;inset:0;
@@ -74,14 +66,11 @@ body{
 }
 .slide.active{opacity:1;visibility:visible;pointer-events:auto;}
 
-/* SAFE CONTENT AREA — 72px top/bottom (≈8%), 88px left/right (≈7%) */
 .safe{
   flex:1 1 auto;min-height:0;
   padding:72px 88px;
   display:flex;flex-direction:column;
 }
-
-/* Header row ------------------------------------------------- */
 .s-head{
   flex:0 0 auto;
   display:flex;align-items:flex-start;justify-content:space-between;
@@ -107,8 +96,6 @@ body{
   border:1px solid var(--line);border-radius:999px;
   padding:.42em .95em;white-space:nowrap;
 }
-
-/* Body ------------------------------------------------------- */
 .slide-body{
   flex:1 1 auto;min-height:0;overflow:hidden;
   display:flex;flex-direction:column;gap:.85em;
@@ -125,7 +112,6 @@ body{
 .muted{color:#6b8098;}
 .center{text-align:center;}
 b,strong{font-weight:800;}
-
 .title-xl{
   font-size:3.3em;line-height:1.05;margin:0;font-weight:900;
   letter-spacing:-.02em;color:var(--navy);
@@ -148,13 +134,10 @@ b,strong{font-weight:800;}
 }
 .card-direct{background:#f2f8ff;border-left:.34em solid var(--blue-500);}
 .card-reported{background:#f0f9f5;border-left:.34em solid var(--mint);}
-
 .quote{font-size:1.05em;line-height:1.45;margin:0;font-weight:600;}
 .quote + .quote{margin-top:.3em;}
-
 .arrow{text-align:center;font-size:1.4em;color:var(--blue-500);line-height:1;margin:-.25em 0;}
 .arrow-h{color:var(--blue-500);font-weight:800;padding:0 .35em;}
-
 .formula{
   font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
   background:#0f2a45;color:#eaf2fb;
@@ -168,7 +151,6 @@ b,strong{font-weight:800;}
   text-transform:uppercase;color:var(--blue-700);line-height:1.3;
 }
 .formula.bar{flex:1;text-align:left;padding:.55em .9em;font-size:.88em;}
-
 .note{
   background:var(--accent-soft);border-left:.3em solid var(--accent);
   border-radius:.5em;padding:.6em .95em;font-size:.95em;line-height:1.45;
@@ -186,14 +168,12 @@ b,strong{font-weight:800;}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em;}
 .stack{display:flex;flex-direction:column;gap:.6em;}
 .row{display:flex;align-items:center;gap:.6em;flex-wrap:wrap;}
-
 .bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.32em;}
 .bullets li{position:relative;padding-left:1.25em;font-size:1em;line-height:1.42;}
 .bullets li::before{
   content:'';position:absolute;left:.3em;top:.55em;
   width:.4em;height:.4em;border-radius:50%;background:var(--blue-500);
 }
-
 .numbered{counter-reset:n;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.45em;}
 .numbered li{counter-increment:n;position:relative;padding-left:2.1em;font-size:1.05em;line-height:1.4;}
 .numbered li::before{
@@ -202,7 +182,6 @@ b,strong{font-weight:800;}
   background:var(--pastel);border:1px solid var(--line);color:var(--blue-700);
   font-weight:800;font-size:.78em;display:grid;place-items:center;
 }
-
 .checklist{display:grid;grid-template-columns:1fr 1fr;gap:.45em .9em;margin:0;padding:0;list-style:none;}
 .checklist li{
   font-size:1.02em;font-weight:600;background:var(--pastel-2);
@@ -218,7 +197,6 @@ b,strong{font-weight:800;}
 .hl-tense{background:#d9e9fb;border-radius:.25em;padding:0 .2em;font-weight:800;}
 .hl-time{background:var(--mint-soft);border-radius:.25em;padding:0 .2em;font-weight:800;}
 .hl-del{color:#9aabbd;text-decoration:line-through;}
-
 .chip{
   display:inline-block;background:var(--pastel);border:1px solid var(--line);
   border-radius:999px;padding:.24em .8em;font-size:.85em;font-weight:800;
@@ -226,7 +204,6 @@ b,strong{font-weight:800;}
 }
 .chip.warn{background:var(--accent-soft);border-color:#efd4a8;}
 .chip.ok{background:var(--mint-soft);border-color:#b9e3d5;}
-
 .legend{display:flex;gap:.5em;flex-wrap:wrap;font-size:.78em;color:var(--navy-soft);}
 .legend span{display:inline-flex;align-items:center;gap:.4em;}
 .dot{width:.8em;height:.8em;border-radius:.2em;display:inline-block;}
@@ -272,7 +249,7 @@ b,strong{font-weight:800;}
 .tn-ex{font-size:.8em;color:#7b8fa3;margin:0;font-style:italic;}
 
 /* ============================================================
-   9. FLOW (3 STEPS)
+   9. FLOW
    ============================================================ */
 .flow{display:flex;align-items:stretch;gap:.55em;justify-content:center;}
 .flow-box{
@@ -286,7 +263,7 @@ b,strong{font-weight:800;}
 .flow-arrow{display:grid;place-items:center;color:var(--blue-500);font-size:1.5em;font-weight:800;}
 
 /* ============================================================
-   10. PAIR LIST (time / place)
+   10. PAIRS
    ============================================================ */
 .pairs{display:grid;grid-template-columns:1fr 1fr;gap:.42em .8em;}
 .pair{
@@ -299,7 +276,7 @@ b,strong{font-weight:800;}
 .pair .to::before{content:'→ ';color:var(--blue-500);font-weight:800;}
 
 /* ============================================================
-   11. QUIZ / GAME
+   11. QUIZ
    ============================================================ */
 .options{display:flex;flex-direction:column;gap:.45em;}
 .opt{
@@ -313,18 +290,15 @@ b,strong{font-weight:800;}
 .opt:disabled{cursor:default;}
 .opt.correct{background:#e9f7f1;border-color:var(--mint);}
 .opt.wrong{background:#fdeeed;border-color:var(--rose);}
-
 .feedback{font-weight:900;font-size:1em;margin:0;min-height:1.2em;}
 .feedback.ok{color:var(--mint);}
 .feedback.no{color:var(--rose);}
-
 .btn-reveal{
   font:inherit;font-size:.88em;font-weight:800;letter-spacing:.04em;
   background:var(--blue-700);color:#fff;border:none;border-radius:.5em;
   padding:.6em 1.4em;cursor:pointer;transition:background .15s;
 }
 .btn-reveal:hover{background:#24486b;}
-
 .answer{
   background:#f0f9f5;border:1px solid #b9e3d5;border-left:.34em solid var(--mint);
   border-radius:.6em;padding:.7em .95em;font-size:1.02em;font-weight:700;line-height:1.45;
@@ -334,7 +308,6 @@ b,strong{font-weight:800;}
   padding:.6em .9em;font-size:.88em;line-height:1.45;color:var(--navy-soft);
 }
 .is-hidden{display:none !important;}
-
 .rules{display:grid;grid-template-columns:1fr 1fr;gap:.5em .9em;margin:0;padding:0;list-style:none;}
 .rules li{
   background:var(--pastel-2);border:1px solid var(--line);border-radius:.5em;
@@ -342,12 +315,38 @@ b,strong{font-weight:800;}
 }
 
 /* ============================================================
-   12. SPEAKER NOTES (never shown on the slide)
+   12. PROGRESSIVE REVEAL  ★ NEW
+   ============================================================ */
+.slide .rv{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(6px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s;
+}
+.slide .rv.shown{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:none;
+}
+/* thumbnails trong Overview luôn hiện đầy đủ */
+#overview .slide .rv{
+  opacity:1 !important;visibility:visible !important;
+  pointer-events:auto !important;transform:none !important;
+}
+/* in ấn cũng hiện đầy đủ */
+@media print{
+  .slide .rv{opacity:1 !important;visibility:visible !important;pointer-events:auto !important;transform:none !important;}
+}
+
+/* ============================================================
+   13. SPEAKER NOTES
    ============================================================ */
 .notes{display:none;}
 
 /* ============================================================
-   13. PROGRESS BAR
+   14. PROGRESS BAR
    ============================================================ */
 #progress{
   position:fixed;top:0;left:0;right:0;height:4px;
@@ -362,7 +361,7 @@ b,strong{font-weight:800;}
 }
 
 /* ============================================================
-   14. CONTROL BAR
+   15. CONTROL BAR
    ============================================================ */
 #controls{
   position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
@@ -381,7 +380,7 @@ b,strong{font-weight:800;}
   border:none;background:transparent;color:var(--navy);
   width:2.3rem;height:2.3rem;border-radius:50%;
   cursor:pointer;display:grid;place-items:center;
-  transition:background .15s,color .15s;
+  transition:background .15s,color .15s,box-shadow .2s;
 }
 .cbtn:hover{background:var(--pastel);color:var(--blue-700);}
 .cbtn.small{font-size:.92rem;width:2.1rem;height:2.1rem;}
@@ -392,11 +391,22 @@ b,strong{font-weight:800;}
 }
 .divider{width:1px;height:1.4rem;background:var(--line);margin:0 .25rem;}
 
+/* ★ NEW: next button đổi màu khi còn nội dung chưa reveal */
+body.has-pending #btnNext{
+  background:var(--accent-soft);
+  color:var(--accent);
+  box-shadow:0 0 0 2px rgba(201,132,54,.18);
+}
+body.has-pending #btnNext:hover{
+  background:var(--accent);
+  color:#fff;
+}
+
 body.hide-ui #controls{opacity:0;transform:translateX(-50%) translateY(14px);pointer-events:none;}
 body.hide-ui #progress{opacity:0;}
 
 /* ============================================================
-   15. PANELS (notes / overview / help)
+   16. PANELS
    ============================================================ */
 .panel{
   position:fixed;z-index:90;background:#fff;
@@ -417,21 +427,18 @@ body.hide-ui #progress{opacity:0;}
 #notesPanel h3{margin:0;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-700);}
 #notesSlide{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em;}
 #notesPanel header .spacer{flex:1;}
-/* FIX #2: notes body phải flex-grow & min-height:0 để cuộn đúng */
 #notesBody{
   padding:1.1rem;overflow-y:auto;
   flex:1 1 auto;min-height:0;
   font-size:.95rem;line-height:1.6;color:var(--navy-soft);
 }
 #notesBody b{color:var(--navy);}
-
 .xbtn{
   border:none;background:var(--pastel);color:var(--blue-700);
   width:2rem;height:2rem;border-radius:50%;cursor:pointer;font-size:1rem;
   display:grid;place-items:center;
 }
 .xbtn:hover{background:var(--blue-200);}
-
 #overview{
   position:fixed;inset:0;z-index:95;
   background:rgba(240,246,253,.96);
@@ -459,7 +466,6 @@ body.hide-ui #progress{opacity:0;}
   border:none;background:transparent;padding:0;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;gap:.45rem;
 }
-/* FIX #4: dùng box-shadow thay border để vùng nội dung đúng 208×147 */
 .thumb-box{
   position:relative;width:208px;height:147px;overflow:hidden;
   border-radius:6px;background:#fff;
@@ -477,7 +483,6 @@ body.hide-ui #progress{opacity:0;}
   font-size:.78rem;font-weight:800;color:var(--blue-700);
   font-variant-numeric:tabular-nums;
 }
-/* FIX #3: bỏ inset:auto !important gây xung đột; dùng giá trị rõ ràng */
 #overview .slide{
   position:absolute;
   top:0;left:0;right:auto;bottom:auto;
@@ -487,7 +492,6 @@ body.hide-ui #progress{opacity:0;}
   border-radius:0;box-shadow:none;transition:none;
   pointer-events:none;
 }
-
 #help{
   top:50%;left:50%;transform:translate(-50%,-50%);
   border-radius:1rem;padding:1.4rem 1.6rem;width:min(460px,92vw);
@@ -503,7 +507,7 @@ kbd{
 }
 
 /* ============================================================
-   16. START SCREEN
+   17. START SCREEN
    ============================================================ */
 #startScreen{
   position:fixed;inset:0;z-index:120;
@@ -531,7 +535,7 @@ kbd{
 .start-hint kbd{margin:0 .1rem;}
 
 /* ============================================================
-   17. RESPONSIVE (deck is scaled by JS, this is UI chrome only)
+   18. RESPONSIVE
    ============================================================ */
 @media (max-width:700px){
   #controls{bottom:12px;padding:.32rem .5rem;font-size:13px;gap:.15rem;}
@@ -545,7 +549,7 @@ kbd{
 }
 
 /* ============================================================
-   18. PRINT — A4 LANDSCAPE
+   19. PRINT
    ============================================================ */
 @media print{
   @page{size:A4 landscape;margin:0;}
@@ -619,8 +623,8 @@ kbd{
           <p class="quote">“Tom says that he is tired.”</p>
         </div>
       </div>
-      <div class="question-box">What is the difference between these two sentences?</div>
-      <p class="p muted center">Think about it for 10 seconds — then share with the class.</p>
+      <div class="question-box rv">What is the difference between these two sentences?</div>
+      <p class="p muted center rv">Think about it for 10 seconds — then share with the class.</p>
     </div>
   </div>
   <aside class="notes">
@@ -651,11 +655,11 @@ kbd{
           <p class="quote">Tom said <span class="hl-q">that</span> <span class="hl-pron">he</span> <span class="hl-tense">was</span> tired.</p>
         </div>
       </div>
-      <p class="p"><b>Three things change:</b></p>
+      <p class="p rv"><b>Three things change:</b></p>
       <div class="grid3">
-        <div class="card center"><p class="quote hl-q">“ ”</p><p class="p muted">Quotation marks<br>disappear</p></div>
-        <div class="card center"><p class="quote"><span class="hl-pron">I → he</span></p><p class="p muted">Pronoun<br>changes</p></div>
-        <div class="card center"><p class="quote"><span class="hl-tense">am → was</span></p><p class="p muted">Tense<br>backshifts</p></div>
+        <div class="card center rv"><p class="quote hl-q">“ ”</p><p class="p muted">Quotation marks<br>disappear</p></div>
+        <div class="card center rv"><p class="quote"><span class="hl-pron">I → he</span></p><p class="p muted">Pronoun<br>changes</p></div>
+        <div class="card center rv"><p class="quote"><span class="hl-tense">am → was</span></p><p class="p muted">Tense<br>backshifts</p></div>
       </div>
     </div>
   </div>
@@ -681,12 +685,12 @@ kbd{
       <div class="card">
         <p class="lead">Reported speech is used to report what another person said <b>without using their exact words</b>.</p>
       </div>
-      <div class="row" style="justify-content:center;gap:1.2em;">
+      <div class="row rv" style="justify-content:center;gap:1.2em;">
         <span class="quote">“I am busy.”</span>
         <span class="arrow-h">→</span>
         <span class="quote">He said that he was busy.</span>
       </div>
-      <div class="note">We keep the <b>meaning</b>, but we change the <b>form</b>.</div>
+      <div class="note rv">We keep the <b>meaning</b>, but we change the <b>form</b>.</div>
     </div>
   </div>
   <aside class="notes">
@@ -697,7 +701,7 @@ kbd{
 </section>
 
 <!-- ============================================================
-     SLIDE 5 — LEARNING OBJECTIVES
+     SLIDE 5 — OBJECTIVES
      ============================================================ -->
 <section class="slide">
   <div class="safe">
@@ -707,7 +711,7 @@ kbd{
     </header>
     <div class="slide-body">
       <p class="lead">By the end of this lesson, students can:</p>
-      <div class="grid2">
+      <div class="grid2 rv">
         <ul class="bullets">
           <li>Identify sentence types</li>
           <li>Report requests</li>
@@ -743,24 +747,24 @@ kbd{
         <div class="tree-root">REPORTED SPEECH</div>
         <div class="tree-stem"></div>
         <div class="tree-row">
-          <div class="tree-node">
+          <div class="tree-node rv">
             <p class="tn-title">REQUEST</p>
             <p class="tn-sub">asked/told + O + to V</p>
             <p class="tn-ex">“Please sit down.”</p>
           </div>
-          <div class="tree-node">
+          <div class="tree-node rv">
             <p class="tn-title">STATEMENT</p>
             <p class="tn-sub">said/told + that + S + V</p>
             <p class="tn-ex">“I am tired.”</p>
           </div>
-          <div class="tree-node">
+          <div class="tree-node rv">
             <p class="tn-title">QUESTION</p>
             <p class="tn-sub">asked + O + if / Wh + S + V</p>
             <p class="tn-ex">“Where do you live?”</p>
           </div>
         </div>
       </div>
-      <div class="note">Step 1 of every transformation: <b>identify the sentence type</b>.</div>
+      <div class="note rv">Step 1 of every transformation: <b>identify the sentence type</b>.</div>
     </div>
   </div>
   <aside class="notes">
@@ -781,11 +785,11 @@ kbd{
     </header>
     <div class="slide-body">
       <ol class="numbered">
-        <li>“Please open the door.”</li>
-        <li>“I am tired.”</li>
-        <li>“Where do you live?”</li>
+        <li class="rv">“Please open the door.”</li>
+        <li class="rv">“I am tired.”</li>
+        <li class="rv">“Where do you live?”</li>
       </ol>
-      <div class="question-box">Request, Statement or Question?</div>
+      <div class="question-box rv">Request, Statement or Question?</div>
     </div>
   </div>
   <aside class="notes">
@@ -804,7 +808,7 @@ kbd{
       <span class="badge">Member 2</span>
     </header>
     <div class="slide-body">
-      <div class="grid2">
+      <div class="grid2 rv">
         <div class="card">
           <p class="card-title">Positive</p>
           <ul class="bullets">
@@ -821,7 +825,7 @@ kbd{
           <p class="quote muted">“Don't look at me like this.”</p>
         </div>
       </div>
-      <div class="note">Dấu hiệu nhận biết: <b>please</b>, <b>can / could / will / would you</b>, hoặc <b>don't + V</b>.</div>
+      <div class="note rv">Dấu hiệu nhận biết: <b>please</b>, <b>can / could / will / would you</b>, hoặc <b>don't + V</b>.</div>
     </div>
   </div>
   <aside class="notes">
@@ -841,16 +845,16 @@ kbd{
       <span class="badge">Member 2</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">“Please sit down,” he said to me.</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">He <span class="hl-tense">asked</span> <span class="hl-pron">me</span> <span class="hl-time">to sit down</span>.</p>
       </div>
-      <div class="formula">asked / told + <em>O</em> + <em>to V</em></div>
+      <div class="formula rv">asked / told + <em>O</em> + <em>to V</em></div>
     </div>
   </div>
   <aside class="notes">
@@ -870,14 +874,14 @@ kbd{
       <span class="badge">Member 2</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="quote">“Please close the window,” Peter said to me.</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="quote">Peter <span class="hl-tense">asked</span> <span class="hl-pron">me</span> <span class="hl-time">to close</span> the window.</p>
       </div>
-      <div class="row">
+      <div class="row rv">
         <span class="chip hl-tense">asked</span>
         <span class="chip hl-pron">me</span>
         <span class="chip hl-time">to close</span>
@@ -900,14 +904,14 @@ kbd{
       <span class="badge">Member 2</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="quote">“Don't open the door,” she said to me.</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="quote">She <span class="hl-tense">asked</span> <span class="hl-pron">me</span> <span class="hl-time">not to open</span> the door.</p>
       </div>
-      <div class="formula">asked / told + <em>O</em> + <em>not to V</em></div>
+      <div class="formula rv">asked / told + <em>O</em> + <em>not to V</em></div>
     </div>
   </div>
   <aside class="notes">
@@ -926,15 +930,15 @@ kbd{
       <span class="badge">Member 2</span>
     </header>
     <div class="slide-body">
-      <table class="tbl">
+      <table class="tbl rv">
         <thead><tr><th>Direct Speech</th><th>Reported Speech</th></tr></thead>
         <tbody>
           <tr><td>V …</td><td><b>to + V</b></td></tr>
           <tr><td>Don't + V …</td><td><b>not to + V</b></td></tr>
         </tbody>
       </table>
-      <div class="note">⚠️ Requests <b>do not</b> use the normal tense backshift.</div>
-      <div class="grid2">
+      <div class="note rv">⚠️ Requests <b>do not</b> use the normal tense backshift.</div>
+      <div class="grid2 rv">
         <div class="card card-direct"><p class="quote">“Open the door.”</p></div>
         <div class="card card-reported"><p class="quote">He told me to open the door.</p></div>
       </div>
@@ -958,17 +962,17 @@ kbd{
     </header>
     <div class="slide-body">
       <div class="grid2">
-        <div class="card card-direct">
+        <div class="card card-direct rv">
           <p class="card-title">Direct</p>
           <p class="quote">She said, “I am busy.”</p>
         </div>
-        <div class="card card-reported">
+        <div class="card card-reported rv">
           <p class="card-title">Reported</p>
           <p class="quote">She said <span class="hl-q">that</span> <span class="hl-pron">she</span> <span class="hl-tense">was</span> busy.</p>
         </div>
       </div>
-      <div class="formula">S + said + <em>that</em> + S + V …</div>
-      <p class="p muted center">Statement = câu kể, thông báo một điều gì đó. Dạng: <b>S + V + …</b></p>
+      <div class="formula rv">S + said + <em>that</em> + S + V …</div>
+      <p class="p muted center rv">Statement = câu kể, thông báo một điều gì đó. Dạng: <b>S + V + …</b></p>
     </div>
   </div>
   <aside class="notes">
@@ -988,13 +992,13 @@ kbd{
       <span class="badge">Member 3</span>
     </header>
     <div class="slide-body">
-      <div class="formula">say + something</div>
-      <div class="grid2">
+      <div class="formula rv">say + something</div>
+      <div class="grid2 rv">
         <div class="card card-reported"><p class="quote">He said that he was tired.</p></div>
         <div class="card card-reported"><p class="quote">Linda said that she liked English.</p></div>
       </div>
-      <div class="note"><b>say</b> không cần tân ngữ chỉ người. Nếu muốn nêu người nghe, phải dùng <b>say to + O</b>.</div>
-      <p class="p center muted">She said to me that she was tired. &nbsp;✓</p>
+      <div class="note rv"><b>say</b> không cần tân ngữ chỉ người. Nếu muốn nêu người nghe, phải dùng <b>say to + O</b>.</div>
+      <p class="p center muted rv">She said to me that she was tired. &nbsp;✓</p>
     </div>
   </div>
   <aside class="notes">
@@ -1014,9 +1018,9 @@ kbd{
       <span class="badge">Member 3</span>
     </header>
     <div class="slide-body">
-      <div class="formula">tell + someone + something</div>
-      <div class="card card-reported"><p class="quote">He told <b>me</b> that he was tired.</p></div>
-      <div class="card" style="background:#fdeeed;border-left:.34em solid var(--rose);">
+      <div class="formula rv">tell + someone + something</div>
+      <div class="card card-reported rv"><p class="quote">He told <b>me</b> that he was tired.</p></div>
+      <div class="card rv" style="background:#fdeeed;border-left:.34em solid var(--rose);">
         <p class="quote">❌ He told that he was tired.</p>
         <p class="p muted">TELL luôn cần một tân ngữ chỉ người.</p>
       </div>
@@ -1039,7 +1043,7 @@ kbd{
       <span class="badge">Member 3</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="grid2">
+      <div class="grid2 rv">
         <div class="card card-direct">
           <p class="card-title">SAY</p>
           <p class="quote">say + something</p>
@@ -1053,7 +1057,7 @@ kbd{
           <p class="p muted">She told John that she was busy.</p>
         </div>
       </div>
-      <div class="question-box">SAY + (to O) + that … &nbsp;&nbsp;|&nbsp;&nbsp; TELL + O + that …</div>
+      <div class="question-box rv">SAY + (to O) + that … &nbsp;&nbsp;|&nbsp;&nbsp; TELL + O + that …</div>
     </div>
   </div>
   <aside class="notes">
@@ -1073,16 +1077,16 @@ kbd{
       <span class="badge">Member 3</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">She said to her boss, “I'll never forget working with you.”</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">She <span class="hl-tense">told</span> her boss that <span class="hl-pron">she</span> <span class="hl-tense">would</span> never forget working with <span class="hl-pron">him</span>.</p>
       </div>
-      <div class="row">
+      <div class="row rv">
         <span class="chip hl-tense">said to → told</span>
         <span class="chip hl-pron">I → she</span>
         <span class="chip hl-tense">will → would</span>
@@ -1109,13 +1113,13 @@ kbd{
       <span class="badge">Member 3</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="formula">said + that + clause</div>
-      <div class="formula">told + <em>object</em> + that + clause</div>
-      <div class="grid2">
+      <div class="formula rv">said + that + clause</div>
+      <div class="formula rv">told + <em>object</em> + that + clause</div>
+      <div class="grid2 rv">
         <div class="card card-reported"><p class="quote">He said that he was tired.</p></div>
         <div class="card card-reported"><p class="quote">He told me that he was tired.</p></div>
       </div>
-      <div class="note">“that” có thể được lược bỏ trong văn nói, nhưng nên viết đầy đủ khi làm bài.</div>
+      <div class="note rv">“that” có thể được lược bỏ trong văn nói, nhưng nên viết đầy đủ khi làm bài.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1135,7 +1139,7 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="grid3">
+      <div class="grid3 rv">
         <div class="card center">
           <p class="card-title">1 · Yes/No</p>
           <p class="quote">“Do you remember me?”</p>
@@ -1152,7 +1156,7 @@ kbd{
           <p class="p muted">Hỏi thông tin</p>
         </div>
       </div>
-      <div class="note">Cả ba loại đều phải chuyển về <b>trật tự câu kể</b>: S + V.</div>
+      <div class="note rv">Cả ba loại đều phải chuyển về <b>trật tự câu kể</b>: S + V.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1171,16 +1175,16 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">“Do you remember me?” Tom said to Mai.</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">Tom asked Mai <span class="hl-q">if</span> <span class="hl-pron">she</span> <span class="hl-tense">remembered</span> <span class="hl-pron">him</span>.</p>
       </div>
-      <div class="formula">asked + <em>O</em> + <em>if / whether</em> + S + V …</div>
+      <div class="formula rv">asked + <em>O</em> + <em>if / whether</em> + S + V …</div>
     </div>
   </div>
   <aside class="notes">
@@ -1200,15 +1204,15 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct"><p class="quote">“Do you like English?”</p></div>
-      <div class="arrow">↓</div>
-      <div class="stack">
+      <div class="card card-direct rv"><p class="quote">“Do you like English?”</p></div>
+      <div class="arrow rv">↓</div>
+      <div class="stack rv">
         <div class="card"><p class="p"><b>1.</b> Add <span class="hl-q">if / whether</span></p></div>
         <div class="card"><p class="p"><b>2.</b> Change word order → <span class="hl-tense">S + V</span> (no inversion)</p></div>
         <div class="card"><p class="p"><b>3.</b> Change tense if necessary</p></div>
         <div class="card"><p class="p"><b>4.</b> Change pronouns</p></div>
       </div>
-      <div class="card card-reported"><p class="quote">He asked me <span class="hl-q">if</span> <span class="hl-pron">I</span> <span class="hl-tense">liked</span> English.</p></div>
+      <div class="card card-reported rv"><p class="quote">He asked me <span class="hl-q">if</span> <span class="hl-pron">I</span> <span class="hl-tense">liked</span> English.</p></div>
     </div>
   </div>
   <aside class="notes">
@@ -1227,7 +1231,7 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="grid2">
+      <div class="grid2 rv">
         <div class="card card-direct">
           <p class="card-title">Direct</p>
           <p class="quote">Where <b>do</b> you live?</p>
@@ -1237,10 +1241,10 @@ kbd{
           <p class="quote">He asked where I lived.</p>
         </div>
       </div>
-      <div class="card" style="background:#fdeeed;border-left:.34em solid var(--rose);">
+      <div class="card rv" style="background:#fdeeed;border-left:.34em solid var(--rose);">
         <p class="quote">❌ He asked where <b>did</b> I live.</p>
       </div>
-      <div class="question-box" style="font-size:1.25em;">QUESTION ORDER &nbsp;→&nbsp; STATEMENT ORDER</div>
+      <div class="question-box rv" style="font-size:1.25em;">QUESTION ORDER &nbsp;→&nbsp; STATEMENT ORDER</div>
     </div>
   </div>
   <aside class="notes">
@@ -1261,16 +1265,16 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">“Do you want to be a pilot or a doctor?”</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">His mother asked him <span class="hl-q">whether</span> <span class="hl-pron">he</span> <span class="hl-tense">wanted</span> to be a pilot <b>or</b> a doctor.</p>
       </div>
-      <div class="formula">asked + <em>O</em> + <em>whether</em> + S + V + … + <em>or</em> + …</div>
+      <div class="formula rv">asked + <em>O</em> + <em>whether</em> + S + V + … + <em>or</em> + …</div>
     </div>
   </div>
   <aside class="notes">
@@ -1289,16 +1293,16 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">“Where do you live?” he asked her.</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">He asked her <span class="hl-q">where</span> <span class="hl-pron">she</span> <span class="hl-tense">lived</span>.</p>
       </div>
-      <div class="formula">asked + <em>O</em> + <em>Wh-word</em> + S + V …</div>
+      <div class="formula rv">asked + <em>O</em> + <em>Wh-word</em> + S + V …</div>
     </div>
   </div>
   <aside class="notes">
@@ -1317,16 +1321,16 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body">
-      <div class="card">
+      <div class="card rv">
         <p class="quote">“What are you doing?” &nbsp;→&nbsp; He asked me <span class="hl-tense">what I was doing</span>.</p>
       </div>
-      <div class="card">
+      <div class="card rv">
         <p class="quote">“When will you arrive?” &nbsp;→&nbsp; She asked me <span class="hl-tense">when I would arrive</span>.</p>
       </div>
-      <div class="card">
+      <div class="card rv">
         <p class="quote">“Why did you leave?” &nbsp;→&nbsp; He asked me <span class="hl-tense">why I had left</span>.</p>
       </div>
-      <div class="note">Chú ý lùi thì: <b>are → was</b>, <b>will → would</b>, <b>did leave → had left</b>.</div>
+      <div class="note rv">Chú ý lùi thì: <b>are → was</b>, <b>will → would</b>, <b>did leave → had left</b>.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1346,7 +1350,7 @@ kbd{
       <span class="badge">Member 4</span>
     </header>
     <div class="slide-body">
-      <table class="tbl">
+      <table class="tbl rv">
         <thead><tr><th>Type</th><th>Reported Structure</th></tr></thead>
         <tbody>
           <tr><td>Yes / No</td><td><b>if / whether</b> + S + V</td></tr>
@@ -1354,7 +1358,7 @@ kbd{
           <tr><td>Wh-</td><td><b>Wh-</b> + S + V</td></tr>
         </tbody>
       </table>
-      <div class="question-box">NO INVERSION — always S + V</div>
+      <div class="question-box rv">NO INVERSION — always S + V</div>
     </div>
   </div>
   <aside class="notes">
@@ -1374,17 +1378,17 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body">
-      <p class="lead">Pronouns change according to <b>the speaker</b> and <b>the listener</b>.</p>
-      <div class="card card-direct">
+      <p class="lead rv">Pronouns change according to <b>the speaker</b> and <b>the listener</b>.</p>
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">Tom said, “<span class="hl-pron">I</span> love <span class="hl-pron">my</span> dog.”</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">Tom said that <span class="hl-pron">he</span> loved <span class="hl-pron">his</span> dog.</p>
       </div>
-      <div class="note">Ask three questions: <b>Who is speaking? Who is listening? Who is being talked about?</b></div>
+      <div class="note rv">Ask three questions: <b>Who is speaking? Who is listening? Who is being talked about?</b></div>
     </div>
   </div>
   <aside class="notes">
@@ -1404,7 +1408,7 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body">
-      <table class="tbl tight">
+      <table class="tbl tight rv">
         <thead>
           <tr>
             <th>Person</th><th>Subject</th><th>Object</th>
@@ -1420,7 +1424,7 @@ kbd{
           <tr><td>3rd plural</td><td><b>they</b></td><td>them</td><td>their</td><td>theirs</td><td>themselves</td></tr>
         </tbody>
       </table>
-      <div class="legend">
+      <div class="legend rv">
         <span><i class="dot hl-pron"></i> Đổi theo người nói</span>
         <span><i class="dot hl-tense"></i> Đổi theo người nghe</span>
       </div>
@@ -1443,16 +1447,16 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">Mary said to John, “<span class="hl-pron">I</span> will help <span class="hl-pron">you</span>.”</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">Mary told John that <span class="hl-pron">she</span> would help <span class="hl-pron">him</span>.</p>
       </div>
-      <div class="row">
+      <div class="row rv">
         <span class="chip hl-pron">I → she</span>
         <span class="chip hl-pron">you → him</span>
         <span class="chip hl-tense">will → would</span>
@@ -1477,15 +1481,15 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="flow">
+      <div class="flow rv">
         <div class="flow-box"><p class="fb-t">PRESENT</p><p class="fb-d">hiện tại</p></div>
         <div class="flow-arrow">→</div>
         <div class="flow-box"><p class="fb-t">PAST</p><p class="fb-d">quá khứ</p></div>
         <div class="flow-arrow">→</div>
         <div class="flow-box"><p class="fb-t">PAST PERFECT</p><p class="fb-d">quá khứ hoàn thành</p></div>
       </div>
-      <div class="note">When the reporting verb is in the <b>past</b> (said, told, asked…), the tense usually moves <b>one step back</b>.</div>
-      <p class="p center muted">Nếu động từ tường thuật ở hiện tại (says, tells), thì <b>không</b> lùi thì.</p>
+      <div class="note rv">When the reporting verb is in the <b>past</b> (said, told, asked…), the tense usually moves <b>one step back</b>.</div>
+      <p class="p center muted rv">Nếu động từ tường thuật ở hiện tại (says, tells), thì <b>không</b> lùi thì.</p>
     </div>
   </div>
   <aside class="notes">
@@ -1505,7 +1509,7 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body">
-      <table class="tbl">
+      <table class="tbl rv">
         <thead><tr><th>Direct Speech</th><th>Reported Speech</th></tr></thead>
         <tbody>
           <tr><td>Present Simple</td><td><b>Past Simple</b></td></tr>
@@ -1535,16 +1539,16 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body">
-      <div class="card">
+      <div class="card rv">
         <p class="quote">“I work hard.” &nbsp;→&nbsp; He said that <span class="hl-tense">he worked</span> hard.</p>
       </div>
-      <div class="card">
+      <div class="card rv">
         <p class="quote">“I am studying.” &nbsp;→&nbsp; She said that <span class="hl-tense">she was studying</span>.</p>
       </div>
-      <div class="card">
+      <div class="card rv">
         <p class="quote">“I will call you.” &nbsp;→&nbsp; He said that <span class="hl-tense">he would call me</span>.</p>
       </div>
-      <div class="note">Mỗi câu có <b>2 thay đổi</b>: đại từ + thì.</div>
+      <div class="note rv">Mỗi câu có <b>2 thay đổi</b>: đại từ + thì.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1563,17 +1567,17 @@ kbd{
       <span class="badge">Member 5</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="quote">“I saw Tom.”</p>
       </div>
-      <div class="card card-reported">
+      <div class="card card-reported rv">
         <p class="quote">She said that <span class="hl-tense">she had seen</span> Tom.</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-direct">
+      <div class="arrow rv">↓</div>
+      <div class="card card-direct rv">
         <p class="quote">“I was studying.”</p>
       </div>
-      <div class="card card-reported">
+      <div class="card card-reported rv">
         <p class="quote">He said that <span class="hl-tense">he had been studying</span>.</p>
       </div>
     </div>
@@ -1596,10 +1600,10 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="card">
+      <div class="card rv">
         <p class="lead">Time and place expressions <b>may change</b> when we report speech.</p>
       </div>
-      <div class="grid2">
+      <div class="grid2 rv">
         <div class="card card-direct">
           <p class="card-title">Direct (now, here)</p>
           <p class="quote">“I will do it <b>tomorrow</b>.”</p>
@@ -1609,7 +1613,7 @@ kbd{
           <p class="quote">He said he would do it <b>the following day</b>.</p>
         </div>
       </div>
-      <div class="note">Vì góc nhìn về thời gian và nơi chốn đã thay đổi khi ta tường thuật lại.</div>
+      <div class="note rv">Vì góc nhìn về thời gian và nơi chốn đã thay đổi khi ta tường thuật lại.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1628,7 +1632,7 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body">
-      <div class="pairs">
+      <div class="pairs rv">
         <div class="pair"><span class="from">this / these</span><span class="to">that / those</span></div>
         <div class="pair"><span class="from">here</span><span class="to">there</span></div>
         <div class="pair"><span class="from">now</span><span class="to">then</span></div>
@@ -1640,7 +1644,7 @@ kbd{
         <div class="pair"><span class="from">last …</span><span class="to">the … before</span></div>
         <div class="pair"><span class="from">next …</span><span class="to">the following …</span></div>
       </div>
-      <div class="note">Học theo cặp — nhớ một cặp là nhớ được cả hàng.</div>
+      <div class="note rv">Học theo cặp — nhớ một cặp là nhớ được cả hàng.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1660,16 +1664,16 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body">
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="card-title">Direct</p>
         <p class="quote">Sarah said, “<span class="hl-pron">I</span> <span class="hl-tense">will</span> meet <span class="hl-pron">you</span> <span class="hl-time">here</span> <span class="hl-time">tomorrow</span>.”</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="card-title">Reported</p>
         <p class="quote">Sarah said that <span class="hl-pron">she</span> <span class="hl-tense">would</span> meet <span class="hl-pron">me</span> <span class="hl-time">there</span> <span class="hl-time">the following day</span>.</p>
       </div>
-      <div class="row">
+      <div class="row rv">
         <span class="chip hl-pron">I → she</span>
         <span class="chip hl-tense">will → would</span>
         <span class="chip hl-pron">you → me</span>
@@ -1695,7 +1699,7 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body vcenter">
-      <ul class="rules">
+      <ul class="rules rv">
         <li>👥 Teams compete</li>
         <li>❓ 3 questions</li>
         <li>⭐ 2 points each</li>
@@ -1703,7 +1707,7 @@ kbd{
         <li>✍️ Write the complete reported sentence</li>
         <li>🏆 Highest score wins</li>
       </ul>
-      <div class="question-box">Are you ready? Let's go!</div>
+      <div class="question-box rv">Are you ready? Let's go!</div>
     </div>
   </div>
   <aside class="notes">
@@ -1723,10 +1727,10 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.15em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.15em;">
         “I am very busy,” Linda said.
       </div>
-      <p class="p muted center">Change into reported speech. &nbsp;⏱️ 20 seconds</p>
+      <p class="p muted center rv">Change into reported speech. &nbsp;⏱️ 20 seconds</p>
       <div>
         <button class="btn-reveal" type="button">Show Answer</button>
       </div>
@@ -1752,10 +1756,10 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.15em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.15em;">
         “Please close the door,” Peter said to me.
       </div>
-      <p class="p muted center">Change into reported speech. &nbsp;⏱️ 20 seconds</p>
+      <p class="p muted center rv">Change into reported speech. &nbsp;⏱️ 20 seconds</p>
       <div>
         <button class="btn-reveal" type="button">Show Answer</button>
       </div>
@@ -1781,10 +1785,10 @@ kbd{
       <span class="badge">Member 6</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.15em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.15em;">
         “Where did you buy this bag?” Anna asked me.
       </div>
-      <p class="p muted center">Change into reported speech. &nbsp;⏱️ 25 seconds</p>
+      <p class="p muted center rv">Change into reported speech. &nbsp;⏱️ 25 seconds</p>
       <div>
         <button class="btn-reveal" type="button">Show Answer</button>
       </div>
@@ -1810,7 +1814,7 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="flow">
+      <div class="flow rv">
         <div class="flow-box">
           <p class="fb-n">STEP 1</p>
           <p class="fb-t">IDENTIFY</p>
@@ -1829,7 +1833,7 @@ kbd{
           <p class="fb-d">Reporting verb + Word order + Grammar</p>
         </div>
       </div>
-      <div class="note">Đây là quy trình 3 bước áp dụng cho <b>mọi</b> câu Reported Speech.</div>
+      <div class="note rv">Đây là quy trình 3 bước áp dụng cho <b>mọi</b> câu Reported Speech.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1850,27 +1854,27 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body">
-      <div class="formula-row">
+      <div class="formula-row rv">
         <span class="formula-label">Request</span>
         <span class="formula bar">asked / told + O + <em>to V</em> &nbsp;/&nbsp; <em>not to V</em></span>
       </div>
-      <div class="formula-row">
+      <div class="formula-row rv">
         <span class="formula-label">Statement</span>
         <span class="formula bar">said / told + (O) + <em>that</em> + S + V</span>
       </div>
-      <div class="formula-row">
+      <div class="formula-row rv">
         <span class="formula-label">Yes / No</span>
         <span class="formula bar">asked + O + <em>if / whether</em> + S + V</span>
       </div>
-      <div class="formula-row">
+      <div class="formula-row rv">
         <span class="formula-label">Or</span>
         <span class="formula bar">asked + O + <em>whether</em> + S + V + … <em>or</em> …</span>
       </div>
-      <div class="formula-row">
+      <div class="formula-row rv">
         <span class="formula-label">Wh-</span>
         <span class="formula bar">asked + O + <em>Wh-word</em> + S + V</span>
       </div>
-      <div class="note">Sau khi áp công thức, luôn kiểm tra: <b>PRONOUN → TENSE → TIME / PLACE</b>.</div>
+      <div class="note rv">Sau khi áp công thức, luôn kiểm tra: <b>PRONOUN → TENSE → TIME / PLACE</b>.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1890,13 +1894,13 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body vcenter">
-      <ul class="rules">
+      <ul class="rules rv">
         <li>❓ 5 questions</li>
         <li>⭐ 1 point each</li>
         <li>⏱️ 10–15 seconds per question</li>
         <li>🔤 Choose A / B / C / D</li>
       </ul>
-      <div class="question-box">Click the answer on screen — Correct or Incorrect will appear instantly.</div>
+      <div class="question-box rv">Click the answer on screen — Correct or Incorrect will appear instantly.</div>
     </div>
   </div>
   <aside class="notes">
@@ -1916,11 +1920,11 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.05em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.05em;">
         “Please help me with this exercise,” Mary said to Tom.<br>
         Mary asked Tom ____.
       </div>
-      <div class="options">
+      <div class="options rv">
         <button class="opt" data-correct="false" type="button">A. help her with this exercise</button>
         <button class="opt" data-correct="true"  type="button">B. to help her with that exercise</button>
         <button class="opt" data-correct="false" type="button">C. helping her with that exercise</button>
@@ -1948,11 +1952,11 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.05em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.05em;">
         “I am studying English now,” Nam said.<br>
         Nam said that he ____ English ____.
       </div>
-      <div class="options">
+      <div class="options rv">
         <button class="opt" data-correct="false" type="button">A. is studying / now</button>
         <button class="opt" data-correct="true"  type="button">B. was studying / then</button>
         <button class="opt" data-correct="false" type="button">C. studied / now</button>
@@ -1981,11 +1985,11 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.05em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.05em;">
         “Do you like this movie?” Anna asked me.<br>
         Anna asked me ____.
       </div>
-      <div class="options">
+      <div class="options rv">
         <button class="opt" data-correct="false" type="button">A. did I like that movie</button>
         <button class="opt" data-correct="true"  type="button">B. if I liked that movie</button>
         <button class="opt" data-correct="false" type="button">C. if did I like that movie</button>
@@ -2013,11 +2017,11 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.05em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.05em;">
         “Where did you buy this book?” Peter asked me.<br>
         Peter asked me ____.
       </div>
-      <div class="options">
+      <div class="options rv">
         <button class="opt" data-correct="false" type="button">A. where did I buy that book</button>
         <button class="opt" data-correct="true"  type="button">B. where I had bought that book</button>
         <button class="opt" data-correct="false" type="button">C. where had I bought this book</button>
@@ -2046,11 +2050,11 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body">
-      <div class="question-box" style="text-align:left;font-size:1.05em;">
+      <div class="question-box rv" style="text-align:left;font-size:1.05em;">
         “I will meet you here tomorrow,” Sarah said to John.<br>
         Sarah told John that ____.
       </div>
-      <div class="options">
+      <div class="options rv">
         <button class="opt" data-correct="true"  type="button">A. she would meet him there the following day</button>
         <button class="opt" data-correct="false" type="button">B. she will meet him here tomorrow</button>
         <button class="opt" data-correct="false" type="button">C. she would meet you there tomorrow</button>
@@ -2080,7 +2084,7 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body vcenter">
-      <ul class="checklist">
+      <ul class="checklist rv">
         <li>Requests</li>
         <li>Statements</li>
         <li>Questions</li>
@@ -2090,7 +2094,7 @@ kbd{
         <li>Word order</li>
         <li>Reporting verbs</li>
       </ul>
-      <div class="note">Nếu làm được cả 8 mục này, bạn đã nắm trọn phần Reported Speech.</div>
+      <div class="note rv">Nếu làm được cả 8 mục này, bạn đã nắm trọn phần Reported Speech.</div>
     </div>
   </div>
   <aside class="notes">
@@ -2109,18 +2113,18 @@ kbd{
       <span class="badge">Member 7</span>
     </header>
     <div class="slide-body vcenter">
-      <div class="flow">
+      <div class="flow rv">
         <div class="flow-box"><p class="fb-t">IDENTIFY</p></div>
         <div class="flow-arrow">→</div>
         <div class="flow-box"><p class="fb-t">CHANGE</p></div>
         <div class="flow-arrow">→</div>
         <div class="flow-box"><p class="fb-t">CHECK</p></div>
       </div>
-      <div class="card card-direct">
+      <div class="card card-direct rv">
         <p class="quote">“Where are you going now?”</p>
       </div>
-      <div class="arrow">↓</div>
-      <div class="card card-reported">
+      <div class="arrow rv">↓</div>
+      <div class="card card-reported rv">
         <p class="quote">He asked me <span class="hl-q">where</span> <span class="hl-pron">I</span> <span class="hl-tense">was going</span> <span class="hl-time">then</span>.</p>
       </div>
     </div>
@@ -2154,9 +2158,9 @@ kbd{
 
 <!-- ================= CONTROL BAR ================= -->
 <div id="controls">
-  <button class="cbtn" id="btnPrev" title="Previous slide (←)" aria-label="Previous slide">‹</button>
+  <button class="cbtn" id="btnPrev" title="Previous (← / cũng ẩn nội dung vừa hiện)" aria-label="Previous slide">‹</button>
   <span id="counter">1 / 51</span>
-  <button class="cbtn" id="btnNext" title="Next slide (→)" aria-label="Next slide">›</button>
+  <button class="cbtn" id="btnNext" title="Next (→ / hiện nội dung tiếp theo)" aria-label="Next slide">›</button>
   <span class="divider"></span>
   <button class="cbtn small" id="btnNotes"    title="Speaker Notes (N)">📝</button>
   <button class="cbtn small" id="btnOverview" title="Overview (O)">▦</button>
@@ -2190,16 +2194,16 @@ kbd{
 <div id="help" class="panel" hidden>
   <h3>Keyboard Shortcuts</h3>
   <table>
-    <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Previous / Next slide</td></tr>
-    <tr><td><kbd>Space</kbd></td><td>Next slide</td></tr>
-    <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>First / Last slide</td></tr>
+    <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Reveal / ẩn nội dung · chuyển slide</td></tr>
+    <tr><td><kbd>Space</kbd></td><td>Reveal tiếp theo / slide kế</td></tr>
+    <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>Slide đầu / cuối</td></tr>
     <tr><td><kbd>F</kbd></td><td>Fullscreen</td></tr>
-    <tr><td><kbd>Esc</kbd></td><td>Exit fullscreen / close panels</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Thoát fullscreen / đóng panel</td></tr>
     <tr><td><kbd>O</kbd></td><td>Overview</td></tr>
     <tr><td><kbd>N</kbd></td><td>Speaker Notes</td></tr>
-    <tr><td><kbd>H</kbd></td><td>Hide / show controls</td></tr>
-    <tr><td><kbd>R</kbd></td><td>Reset current slide (games)</td></tr>
-    <tr><td><kbd>1</kbd> … <kbd>9</kbd></td><td>Jump to slide</td></tr>
+    <tr><td><kbd>H</kbd></td><td>Ẩn / hiện controls</td></tr>
+    <tr><td><kbd>R</kbd></td><td>Reset slide hiện tại (reveal + game)</td></tr>
+    <tr><td><kbd>1</kbd> … <kbd>9</kbd></td><td>Nhảy tới slide</td></tr>
   </table>
 </div>
 
@@ -2211,7 +2215,7 @@ kbd{
     <p class="sub">Direct Speech &nbsp;→&nbsp; Reported Speech &nbsp;·&nbsp; 51 slides</p>
     <button id="btnStart" type="button">▶&nbsp; Start Presentation</button>
     <p class="start-hint">
-      <kbd>←</kbd><kbd>→</kbd> navigate &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp;
+      Click / <kbd>→</kbd> để hiện dần nội dung &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp;
       <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>N</kbd> notes
     </p>
   </div>
@@ -2224,11 +2228,10 @@ kbd{
   /* ============================================================
      CONSTANTS
      ============================================================ */
-  var SW = 1280;          // slide design width  (px)
-  var SH = 905;           // slide design height (px)  → 1.414 : 1
-  var BASE_FS = 21;       // base slide font-size at 100 %
+  var SW = 1280;
+  var SH = 905;
+  var BASE_FS = 21;
 
-  // FIX #5b: mở rộng dải scale để auto-fit an toàn hơn với slide dày đặc
   var SCALES = [1, .96, .92, .88, .85, .82, .79, .76, .73, .70,
                 .67, .64, .61, .58, .55, .52, .50, .48, .46];
 
@@ -2250,7 +2253,7 @@ kbd{
   var elStart      = document.getElementById('startScreen');
 
   /* ============================================================
-     AUTO-FIT  —  mọi nội dung phải nằm gọn trong 1 slide A4
+     AUTO-FIT
      ============================================================ */
   function isOverflowing(body) {
     return body.scrollHeight > body.clientHeight + 1 ||
@@ -2265,7 +2268,6 @@ kbd{
       slide.style.fontSize = (BASE_FS * SCALES[i]) + 'px';
       if (!isOverflowing(body)) return;
     }
-    // Ngưỡng nhỏ nhất chấp nhận được (~9.66px) — không xuống thấp hơn.
     slide.style.fontSize = (BASE_FS * 0.46) + 'px';
   }
 
@@ -2274,7 +2276,7 @@ kbd{
   }
 
   /* ============================================================
-     DECK SCALING  (giữ nguyên tỉ lệ A4 landscape)
+     DECK SCALING
      ============================================================ */
   function layout() {
     var vw = window.innerWidth;
@@ -2290,7 +2292,54 @@ kbd{
   }
 
   /* ============================================================
-     NAVIGATION
+     PROGRESSIVE REVEAL
+     ============================================================ */
+  function pendingReveals(slide){
+    if (!slide) return [];
+    var all = slide.querySelectorAll('.rv');
+    var out = [];
+    for (var i = 0; i < all.length; i++){
+      if (!all[i].classList.contains('shown')) out.push(all[i]);
+    }
+    return out;
+  }
+
+  function revealNext(){
+    var slide = slides[cur];
+    if (!slide) return false;
+    var p = pendingReveals(slide);
+    if (!p.length) return false;
+    p[0].classList.add('shown');
+    fitSlide(slide);
+    updateNextButtonState();
+    return true;
+  }
+
+  function revealPrev(){
+    var slide = slides[cur];
+    if (!slide) return false;
+    var shown = slide.querySelectorAll('.rv.shown');
+    if (!shown.length) return false;
+    shown[shown.length - 1].classList.remove('shown');
+    fitSlide(slide);
+    updateNextButtonState();
+    return true;
+  }
+
+  function resetReveals(slide){
+    if (!slide) return;
+    var all = slide.querySelectorAll('.rv');
+    for (var i = 0; i < all.length; i++) all[i].classList.remove('shown');
+  }
+
+  function updateNextButtonState(){
+    var slide = slides[cur];
+    var hasPending = pendingReveals(slide).length > 0;
+    document.body.classList.toggle('has-pending', hasPending);
+  }
+
+  /* ============================================================
+     NAVIGATION  —  reveal first, then move slide
      ============================================================ */
   function go(index) {
     if (index < 0) index = 0;
@@ -2305,8 +2354,8 @@ kbd{
     elProgress.style.width = ((cur + 1) / total * 100) + '%';
 
     updateNotes();
+    updateNextButtonState();
 
-    // highlight thumbnail hiện tại
     var thumbs = elOvGrid.querySelectorAll('.thumb');
     for (var t = 0; t < thumbs.length; t++) {
       thumbs[t].classList.toggle('current', t === cur);
@@ -2315,8 +2364,17 @@ kbd{
     try { localStorage.setItem('rs_slide', String(cur)); } catch (e) {}
   }
 
-  function next() { go(cur + 1); }
-  function prev() { go(cur - 1); }
+  function next() {
+    // Nếu slide hiện tại còn nội dung chưa reveal → reveal tiếp
+    if (revealNext()) return;
+    go(cur + 1);
+  }
+
+  function prev() {
+    // Nếu slide hiện tại có nội dung đã reveal → ẩn dần lại
+    if (revealPrev()) return;
+    go(cur - 1);
+  }
 
   /* ============================================================
      SPEAKER NOTES
@@ -2440,7 +2498,7 @@ kbd{
   }
 
   /* ============================================================
-     SLIDE RESET (dùng cho game)
+     SLIDE RESET
      ============================================================ */
   function resetSlide(i) {
     var slide = slides[i];
@@ -2467,7 +2525,11 @@ kbd{
     var exps = slide.querySelectorAll('.explain');
     for (var e = 0; e < exps.length; e++) exps[e].classList.add('is-hidden');
 
+    // ★ Reset reveal
+    resetReveals(slide);
+
     fitSlide(slide);
+    updateNextButtonState();
   }
 
   /* ============================================================
@@ -2578,7 +2640,7 @@ kbd{
   });
 
   /* ============================================================
-     TOUCH  (swipe left / right)
+     TOUCH
      ============================================================ */
   var touchStartX = 0, touchStartY = 0, touchActive = false;
 
@@ -2661,11 +2723,8 @@ kbd{
      ============================================================ */
   function boot() {
     layout();
-
-    // 1) Auto-fit mọi slide để không bao giờ tràn
     fitAll();
 
-    // 2) Fit lại sau khi font/layout ổn định
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
         fitAll();
@@ -2675,7 +2734,6 @@ kbd{
       setTimeout(function () { fitAll(); buildOverview(); }, 60);
     }
 
-    // 3) Khôi phục tuỳ chọn
     var saved = 0;
     try { saved = parseInt(localStorage.getItem('rs_slide') || '0', 10) || 0; } catch (e) {}
     if (saved < 0 || saved >= total) saved = 0;
@@ -2684,7 +2742,6 @@ kbd{
 
     go(saved);
 
-    // 4) Start screen
     var started = false;
     try { started = sessionStorage.getItem('rs_started') === '1'; } catch (e) {}
     if (started) {
