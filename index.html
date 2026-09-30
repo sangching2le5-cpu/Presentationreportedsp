@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reported Speech — Presentation</title>
+<style>
+/* ============================================================
+   0. TOKENS
+   ============================================================ */
+:root{
+  --navy:#14293f;
+  --navy-soft:#3d5871;
+  --blue-700:#2f5d8a;
+  --blue-500:#7aa7d9;
+  --blue-200:#cfe1f5;
+  --pastel:#eaf2fb;
+  --pastel-2:#f6faff;
+  --line:#d8e6f4;
+  --accent:#c98436;
+  --accent-soft:#fbe9cf;
+  --mint:#3f9d8a;
+  --mint-soft:#dcf1e8;
+  --rose:#c0574f;
+  --rose-soft:#fbe3e1;
+  --shadow:0 22px 60px rgba(20,41,63,.18), 0 2px 8px rgba(20,41,63,.06);
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{
+  font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  background:radial-gradient(1200px 820px at 50% -10%, #f6faff 0%, #e3edf9 55%, #d4e2f2 100%);
+  color:var(--navy);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ============================================================
+   1. STAGE + DECK
+   ============================================================ */
+#stage{position:fixed;inset:0;display:grid;place-items:center;}
+#deck{
+  position:relative;
+  width:1280px;height:905px;
+  transform-origin:center center;
+  transition:transform .18s ease-out;
+}
+
+/* ============================================================
+   2. SLIDE — A4 LANDSCAPE (297×210mm ≈ 1.414:1)
+   ============================================================ */
+.slide{
+  position:absolute;inset:0;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  font-size:21px;
+  color:var(--navy);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .22s ease;
+}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;}
+
+/* SAFE CONTENT AREA — 72px top/bottom (≈8%), 88px left/right (≈7%) */
+.safe{
+  flex:1 1 auto;min-height:0;
+  padding:72px 88px;
+  display:flex;flex-direction:column;
+}
+
+/* Header row ------------------------------------------------- */
+.s-head{
+  flex:0 0 auto;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;margin-bottom:20px;
+}
+.kicker{
+  font-size:.64em;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:800;color:var(--accent);margin:0 0 .3em;
+}
+.s-title{
+  font-size:1.85em;line-height:1.14;margin:0;
+  font-weight:800;letter-spacing:-.015em;color:var(--navy);
+}
+.s-title::after{
+  content:'';display:block;width:2.4em;height:.13em;
+  background:linear-gradient(90deg,var(--accent),var(--blue-500));
+  border-radius:99px;margin-top:.34em;
+}
+.badge{
+  flex:none;
+  font-size:.6em;letter-spacing:.14em;font-weight:800;text-transform:uppercase;
+  color:var(--blue-700);background:var(--pastel);
+  border:1px solid var(--line);border-radius:999px;
+  padding:.42em .95em;white-space:nowrap;
+}
+
+/* Body ------------------------------------------------------- */
+.slide-body{
+  flex:1 1 auto;min-height:0;overflow:hidden;
+  display:flex;flex-direction:column;gap:.85em;
+}
+.slide-body > *{flex:0 0 auto;}
+.vcenter{justify-content:center;}
+
+/* ============================================================
+   3. TYPOGRAPHY
+   ============================================================ */
+.p,.lead{margin:0;line-height:1.5;}
+.p{font-size:1em;}
+.lead{font-size:1.1em;color:var(--navy-soft);}
+.muted{color:#6b8098;}
+.center{text-align:center;}
+b,strong{font-weight:800;}
+
+.title-xl{
+  font-size:3.3em;line-height:1.05;margin:0;font-weight:900;
+  letter-spacing:-.02em;color:var(--navy);
+}
+.subtitle{font-size:1.35em;font-weight:700;color:var(--blue-700);margin:0;}
+.title-rule{width:4.5em;height:.14em;background:var(--accent);border-radius:99px;margin:.2em auto;}
+
+/* ============================================================
+   4. CARDS / BLOCKS
+   ============================================================ */
+.card{
+  background:var(--pastel-2);
+  border:1px solid var(--line);
+  border-radius:.7em;
+  padding:.85em 1.1em;
+}
+.card-title{
+  font-size:.66em;letter-spacing:.16em;text-transform:uppercase;
+  font-weight:800;color:var(--blue-700);margin:0 0 .5em;
+}
+.card-direct{background:#f2f8ff;border-left:.34em solid var(--blue-500);}
+.card-reported{background:#f0f9f5;border-left:.34em solid var(--mint);}
+
+.quote{font-size:1.05em;line-height:1.45;margin:0;font-weight:600;}
+.quote + .quote{margin-top:.3em;}
+
+.arrow{text-align:center;font-size:1.4em;color:var(--blue-500);line-height:1;margin:-.25em 0;}
+.arrow-h{color:var(--blue-500);font-weight:800;padding:0 .35em;}
+
+.formula{
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:#0f2a45;color:#eaf2fb;
+  border-radius:.5em;padding:.7em 1em;
+  text-align:center;font-weight:700;font-size:1em;letter-spacing:.01em;
+}
+.formula em{color:#ffd79a;font-style:normal;}
+.formula-row{display:flex;align-items:center;gap:.8em;}
+.formula-label{
+  flex:0 0 6.2em;font-size:.62em;font-weight:800;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--blue-700);line-height:1.3;
+}
+.formula.bar{flex:1;text-align:left;padding:.55em .9em;font-size:.88em;}
+
+.note{
+  background:var(--accent-soft);border-left:.3em solid var(--accent);
+  border-radius:.5em;padding:.6em .95em;font-size:.95em;line-height:1.45;
+}
+.question-box{
+  background:var(--pastel);border:1px dashed var(--blue-500);
+  border-radius:.7em;padding:.8em 1.1em;
+  font-size:1.1em;font-weight:800;color:var(--blue-700);text-align:center;
+}
+
+/* ============================================================
+   5. LAYOUT HELPERS
+   ============================================================ */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.85em;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em;}
+.stack{display:flex;flex-direction:column;gap:.6em;}
+.row{display:flex;align-items:center;gap:.6em;flex-wrap:wrap;}
+
+.bullets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.32em;}
+.bullets li{position:relative;padding-left:1.25em;font-size:1em;line-height:1.42;}
+.bullets li::before{
+  content:'';position:absolute;left:.3em;top:.55em;
+  width:.4em;height:.4em;border-radius:50%;background:var(--blue-500);
+}
+
+.numbered{counter-reset:n;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.45em;}
+.numbered li{counter-increment:n;position:relative;padding-left:2.1em;font-size:1.05em;line-height:1.4;}
+.numbered li::before{
+  content:counter(n);position:absolute;left:0;top:.05em;
+  width:1.55em;height:1.55em;border-radius:50%;
+  background:var(--pastel);border:1px solid var(--line);color:var(--blue-700);
+  font-weight:800;font-size:.78em;display:grid;place-items:center;
+}
+
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:.45em .9em;margin:0;padding:0;list-style:none;}
+.checklist li{
+  font-size:1.02em;font-weight:600;background:var(--pastel-2);
+  border:1px solid var(--line);border-radius:.5em;padding:.45em .8em;
+}
+.checklist li::before{content:'✓ ';color:var(--mint);font-weight:900;}
+
+/* ============================================================
+   6. HIGHLIGHTS
+   ============================================================ */
+.hl-q{background:#e6eef8;color:var(--blue-700);border-radius:.25em;padding:0 .2em;font-weight:800;}
+.hl-pron{background:var(--accent-soft);border-radius:.25em;padding:0 .2em;font-weight:800;}
+.hl-tense{background:#d9e9fb;border-radius:.25em;padding:0 .2em;font-weight:800;}
+.hl-time{background:var(--mint-soft);border-radius:.25em;padding:0 .2em;font-weight:800;}
+.hl-del{color:#9aabbd;text-decoration:line-through;}
+
+.chip{
+  display:inline-block;background:var(--pastel);border:1px solid var(--line);
+  border-radius:999px;padding:.24em .8em;font-size:.85em;font-weight:800;
+  margin:.15em .35em .15em 0;white-space:nowrap;
+}
+.chip.warn{background:var(--accent-soft);border-color:#efd4a8;}
+.chip.ok{background:var(--mint-soft);border-color:#b9e3d5;}
+
+.legend{display:flex;gap:.5em;flex-wrap:wrap;font-size:.78em;color:var(--navy-soft);}
+.legend span{display:inline-flex;align-items:center;gap:.4em;}
+.dot{width:.8em;height:.8em;border-radius:.2em;display:inline-block;}
+
+/* ============================================================
+   7. TABLES
+   ============================================================ */
+.tbl{width:100%;border-collapse:collapse;font-size:.88em;}
+.tbl th{
+  background:var(--pastel);color:var(--blue-700);font-weight:800;text-align:left;
+  padding:.42em .72em;font-size:.9em;letter-spacing:.05em;text-transform:uppercase;
+}
+.tbl td{padding:.34em .72em;border-top:1px solid var(--line);line-height:1.35;}
+.tbl tbody tr:nth-child(even){background:#f8fbff;}
+.tbl td:first-child{color:var(--navy-soft);font-weight:600;}
+.tbl.tight{font-size:.8em;}
+.tbl.tight td,.tbl.tight th{padding:.28em .6em;}
+
+/* ============================================================
+   8. TREE DIAGRAM
+   ============================================================ */
+.tree{display:flex;flex-direction:column;align-items:center;gap:0;}
+.tree-root{
+  background:#0f2a45;color:#eaf2fb;font-weight:800;letter-spacing:.14em;
+  font-size:.8em;padding:.6em 1.6em;border-radius:.5em;
+}
+.tree-stem{width:2px;height:1.3em;background:var(--blue-500);}
+.tree-row{
+  display:flex;gap:1em;width:100%;
+  border-top:2px solid var(--blue-500);padding-top:1.5em;
+}
+.tree-node{
+  flex:1;position:relative;text-align:center;
+  background:var(--pastel-2);border:1px solid var(--line);
+  border-radius:.7em;padding:.85em .7em;
+}
+.tree-node::before{
+  content:'';position:absolute;top:-1.5em;left:50%;
+  width:2px;height:1.5em;background:var(--blue-500);transform:translateX(-1px);
+}
+.tn-title{font-size:.95em;font-weight:900;letter-spacing:.1em;color:var(--blue-700);margin:0 0 .35em;}
+.tn-sub{font-size:.8em;font-weight:700;color:var(--navy-soft);margin:0 0 .4em;font-family:Consolas,monospace;}
+.tn-ex{font-size:.8em;color:#7b8fa3;margin:0;font-style:italic;}
+
+/* ============================================================
+   9. FLOW (3 STEPS)
+   ============================================================ */
+.flow{display:flex;align-items:stretch;gap:.55em;justify-content:center;}
+.flow-box{
+  flex:1;background:var(--pastel-2);border:1px solid var(--line);
+  border-radius:.7em;padding:.8em;text-align:center;
+  display:flex;flex-direction:column;gap:.35em;justify-content:center;
+}
+.flow-box .fb-n{font-size:.62em;font-weight:900;letter-spacing:.18em;color:var(--accent);}
+.flow-box .fb-t{font-size:1.05em;font-weight:900;letter-spacing:.06em;color:var(--navy);}
+.flow-box .fb-d{font-size:.78em;color:var(--navy-soft);line-height:1.35;}
+.flow-arrow{display:grid;place-items:center;color:var(--blue-500);font-size:1.5em;font-weight:800;}
+
+/* ============================================================
+   10. PAIR LIST (time / place)
+   ============================================================ */
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:.42em .8em;}
+.pair{
+  display:flex;align-items:center;justify-content:space-between;gap:.6em;
+  background:var(--pastel-2);border:1px solid var(--line);
+  border-radius:.45em;padding:.38em .8em;font-size:.9em;
+}
+.pair .from{font-weight:800;color:var(--blue-700);}
+.pair .to{font-weight:700;color:var(--mint);}
+.pair .to::before{content:'→ ';color:var(--blue-500);font-weight:800;}
+
+/* ============================================================
+   11. QUIZ / GAME
+   ============================================================ */
+.options{display:flex;flex-direction:column;gap:.45em;}
+.opt{
+  display:block;width:100%;text-align:left;font:inherit;font-size:.98em;font-weight:600;
+  background:#fff;border:1.6px solid var(--line);border-radius:.55em;
+  padding:.58em .95em;color:var(--navy);cursor:pointer;
+  transition:background .15s,border-color .15s,transform .1s;
+}
+.opt:hover:not(:disabled){border-color:var(--blue-500);background:var(--pastel-2);}
+.opt:active:not(:disabled){transform:scale(.995);}
+.opt:disabled{cursor:default;}
+.opt.correct{background:#e9f7f1;border-color:var(--mint);}
+.opt.wrong{background:#fdeeed;border-color:var(--rose);}
+
+.feedback{font-weight:900;font-size:1em;margin:0;min-height:1.2em;}
+.feedback.ok{color:var(--mint);}
+.feedback.no{color:var(--rose);}
+
+.btn-reveal{
+  font:inherit;font-size:.88em;font-weight:800;letter-spacing:.04em;
+  background:var(--blue-700);color:#fff;border:none;border-radius:.5em;
+  padding:.6em 1.4em;cursor:pointer;transition:background .15s;
+}
+.btn-reveal:hover{background:#24486b;}
+
+.answer{
+  background:#f0f9f5;border:1px solid #b9e3d5;border-left:.34em solid var(--mint);
+  border-radius:.6em;padding:.7em .95em;font-size:1.02em;font-weight:700;line-height:1.45;
+}
+.explain{
+  background:var(--pastel-2);border:1px dashed var(--line);border-radius:.6em;
+  padding:.6em .9em;font-size:.88em;line-height:1.45;color:var(--navy-soft);
+}
+.is-hidden{display:none !important;}
+
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:.5em .9em;margin:0;padding:0;list-style:none;}
+.rules li{
+  background:var(--pastel-2);border:1px solid var(--line);border-radius:.5em;
+  padding:.5em .85em;font-size:.95em;font-weight:600;
+}
+
+/* ============================================================
+   12. SPEAKER NOTES (never shown on the slide)
+   ============================================================ */
+.notes{display:none;}
+
+/* ============================================================
+   13. PROGRESS BAR
+   ============================================================ */
+#progress{
+  position:fixed;top:0;left:0;right:0;height:4px;
+  background:rgba(20,41,63,.08);z-index:60;
+  transition:opacity .3s;
+}
+#progress-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--blue-500),var(--blue-700));
+  border-radius:0 99px 99px 0;
+  transition:width .25s ease;
+}
+
+/* ============================================================
+   14. CONTROL BAR
+   ============================================================ */
+#controls{
+  position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:.4rem;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:999px;
+  padding:.42rem .7rem;
+  box-shadow:0 10px 30px rgba(20,41,63,.14);
+  z-index:70;
+  transition:opacity .3s ease, transform .3s ease;
+  font-size:15px;
+}
+.cbtn{
+  font:inherit;font-size:1rem;line-height:1;
+  border:none;background:transparent;color:var(--navy);
+  width:2.3rem;height:2.3rem;border-radius:50%;
+  cursor:pointer;display:grid;place-items:center;
+  transition:background .15s,color .15s;
+}
+.cbtn:hover{background:var(--pastel);color:var(--blue-700);}
+.cbtn.small{font-size:.92rem;width:2.1rem;height:2.1rem;}
+#counter{
+  font-size:.85rem;font-weight:800;color:var(--blue-700);
+  min-width:4.6rem;text-align:center;letter-spacing:.03em;
+  font-variant-numeric:tabular-nums;
+}
+.divider{width:1px;height:1.4rem;background:var(--line);margin:0 .25rem;}
+
+body.hide-ui #controls{opacity:0;transform:translateX(-50%) translateY(14px);pointer-events:none;}
+body.hide-ui #progress{opacity:0;}
+
+/* ============================================================
+   15. PANELS (notes / overview / help)
+   ============================================================ */
+.panel{
+  position:fixed;z-index:90;background:#fff;
+  box-shadow:0 20px 60px rgba(20,41,63,.22);
+  border:1px solid var(--line);
+}
+#notesPanel{
+  top:0;right:0;bottom:0;width:min(430px,92vw);
+  display:flex;flex-direction:column;
+  animation:slideIn .22s ease;
+}
+@keyframes slideIn{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+#notesPanel header{
+  display:flex;align-items:center;gap:.6rem;
+  padding:1rem 1.1rem;border-bottom:1px solid var(--line);
+}
+#notesPanel h3{margin:0;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-700);}
+#notesSlide{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em;}
+#notesPanel header .spacer{flex:1;}
+#notesBody{padding:1.1rem;overflow-y:auto;font-size:.95rem;line-height:1.6;color:var(--navy-soft);}
+#notesBody b{color:var(--navy);}
+
+.xbtn{
+  border:none;background:var(--pastel);color:var(--blue-700);
+  width:2rem;height:2rem;border-radius:50%;cursor:pointer;font-size:1rem;
+  display:grid;place-items:center;
+}
+.xbtn:hover{background:var(--blue-200);}
+
+#overview{
+  position:fixed;inset:0;z-index:95;
+  background:rgba(240,246,253,.96);
+  backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;
+  animation:fade .2s ease;
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+#overview header{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.5rem;border-bottom:1px solid var(--line);
+}
+#overview h3{margin:0;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-700);}
+#overview header .spacer{flex:1;}
+#ovGrid{
+  flex:1;overflow-y:auto;
+  padding:1.5rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(212px,1fr));
+  gap:1.2rem;
+  justify-items:center;
+}
+.thumb{
+  border:none;background:transparent;padding:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:.45rem;
+}
+.thumb-box{
+  position:relative;width:208px;height:147px;overflow:hidden;
+  border-radius:6px;border:2px solid var(--line);background:#fff;
+  box-shadow:0 4px 14px rgba(20,41,63,.10);
+  transition:border-color .15s, transform .15s, box-shadow .15s;
+}
+.thumb:hover .thumb-box{border-color:var(--blue-500);transform:translateY(-2px);box-shadow:0 10px 24px rgba(20,41,63,.16);}
+.thumb.current .thumb-box{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.thumb-num{
+  font-size:.78rem;font-weight:800;color:var(--blue-700);
+  font-variant-numeric:tabular-nums;
+}
+#overview .slide{
+  position:absolute !important;top:0 !important;left:0 !important;
+  inset:auto !important;
+  width:1280px !important;height:905px !important;
+  transform:scale(.1625);transform-origin:top left;
+  opacity:1 !important;visibility:visible !important;
+  border-radius:0;box-shadow:none;transition:none;
+  pointer-events:none;
+}
+
+#help{
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  border-radius:1rem;padding:1.4rem 1.6rem;width:min(460px,92vw);
+}
+#help h3{margin:0 0 1rem;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-700);}
+#help table{width:100%;border-collapse:collapse;font-size:.9rem;}
+#help td{padding:.4rem 0;border-bottom:1px solid var(--line);color:var(--navy-soft);}
+#help td:first-child{width:42%;}
+kbd{
+  display:inline-block;background:var(--pastel);border:1px solid var(--line);
+  border-bottom-width:2px;border-radius:.35rem;padding:.1rem .45rem;
+  font-family:inherit;font-size:.82rem;font-weight:800;color:var(--blue-700);
+}
+
+/* ============================================================
+   16. START SCREEN
+   ============================================================ */
+#startScreen{
+  position:fixed;inset:0;z-index:120;
+  background:radial-gradient(900px 620px at 50% 30%, #ffffff 0%, #e8f1fb 60%, #d9e6f5 100%);
+  display:grid;place-items:center;
+  transition:opacity .35s ease, visibility .35s;
+}
+#startScreen.gone{opacity:0;visibility:hidden;}
+.start-card{text-align:center;padding:2rem;max-width:640px;}
+.start-card .kicker{font-size:.75rem;margin-bottom:.9rem;}
+.start-card h1{
+  font-size:clamp(2rem,6vw,3.4rem);margin:0 0 .5rem;font-weight:900;
+  letter-spacing:-.02em;color:var(--navy);
+}
+.start-card .sub{font-size:1.05rem;font-weight:700;color:var(--blue-700);margin:0 0 1.8rem;}
+#btnStart{
+  font:inherit;font-size:1.05rem;font-weight:800;letter-spacing:.03em;
+  background:var(--blue-700);color:#fff;border:none;border-radius:999px;
+  padding:.9rem 2.4rem;cursor:pointer;
+  box-shadow:0 12px 30px rgba(47,93,138,.32);
+  transition:transform .15s, background .15s;
+}
+#btnStart:hover{background:#24486b;transform:translateY(-2px);}
+.start-hint{margin-top:1.6rem;font-size:.82rem;color:#7b8fa3;line-height:1.7;}
+.start-hint kbd{margin:0 .1rem;}
+
+/* ============================================================
+   17. RESPONSIVE (deck is scaled by JS, this is UI chrome only)
+   ============================================================ */
+@media (max-width:700px){
+  #controls{bottom:12px;padding:.32rem .5rem;font-size:13px;gap:.15rem;}
+  .cbtn{width:2.1rem;height:2.1rem;font-size:.95rem;}
+  .cbtn.small{width:1.95rem;height:1.95rem;font-size:.85rem;}
+  #counter{min-width:3.9rem;font-size:.78rem;}
+  .divider{display:none;}
+  #ovGrid{padding:1rem;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+  .thumb-box{width:158px;height:111.7px;}
+  #overview .slide{transform:scale(.1234);}
+}
+
+/* ============================================================
+   18. PRINT — A4 LANDSCAPE
+   ============================================================ */
+@media print{
+  @page{size:A4 landscape;margin:0;}
+  html,body{height:auto;overflow:visible;background:#fff;}
+  #stage{position:static;display:block;}
+  #deck{position:static;width:auto;height:auto;transform:none !important;transition:none;}
+  .slide{
+    position:relative !important;inset:auto !important;
+    width:297mm;height:210mm;
+    opacity:1 !important;visibility:visible !important;
+    border-radius:0;box-shadow:none;overflow:hidden;
+    page-break-after:always;break-after:page;
+    display:flex !important;
+  }
+  .safe{
+    flex:none;width:1280px;height:905px;
+    transform:scale(.87695);transform-origin:top left;
+    padding:72px 88px;
+  }
+  .notes{display:none !important;}
+  #controls,#overview,#notesPanel,#help,#progress,#startScreen{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= PROGRESS ================= -->
+<div id="progress"><div id="progress-fill"></div></div>
+
+<!-- ================= STAGE / DECK ================= -->
+<div id="stage">
+<div id="deck">
+
+<!-- ============================================================
+     SLIDE 1 — TITLE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head"><div></div><span class="badge">Member 1</span></header>
+    <div class="slide-body vcenter center">
+      <h1 class="title-xl">REPORTED SPEECH</h1>
+      <p class="subtitle">Direct Speech &nbsp;→&nbsp; Reported Speech</p>
+      <div class="title-rule"></div>
+      <p class="p muted">Group Presentation &nbsp;·&nbsp; 7 Members</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Chào cả lớp. Hôm nay nhóm mình trình bày về <b>Reported Speech</b> — cách tường thuật lại lời nói của người khác.</p>
+    <p>Lộ trình bài học: nhận diện loại câu → công thức chuyển → đổi đại từ → lùi thì → đổi từ chỉ thời gian/nơi chốn → 2 game ôn tập.</p>
+    <p>Nhấn mạnh: cả bài chỉ xoay quanh 3 loại câu — <b>Request, Statement, Question</b>.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — WARM-UP
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Warm-up</p><h2 class="s-title">Two sentences — what's different?</h2></div>
+      <span class="badge">Member 1</span>
+    </header>
+    <div class="slide-body">
+      <div class="grid2">
+        <div class="card card-direct">
+          <p class="card-title">Tom</p>
+          <p class="quote">“I am tired.”</p>
+        </div>
+        <div class="card card-reported">
+          <p class="card-title">Anna</p>
+          <p class="quote">“Tom says that he is tired.”</p>
+        </div>
+      </div>
+      <div class="question-box">What is the difference between these two sentences?</div>
+      <p class="p muted center">Think about it for 10 seconds — then share with the class.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Mở đầu bằng một tình huống rất đời thường: Tom nói trực tiếp, Anna kể lại cho người khác.</p>
+    <p>Hỏi cả lớp: “Câu của Tom và câu của Anna khác nhau ở điểm nào?”</p>
+    <p>Gợi ý nếu lớp im lặng: dấu ngoặc kép, đại từ, thì của động từ, và từ nối “that”.</p>
+    <p>Chốt: câu của Anna chính là <b>Reported Speech</b>.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — DIRECT VS REPORTED
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Overview</p><h2 class="s-title">Direct vs Reported Speech</h2></div>
+      <span class="badge">Member 1</span>
+    </header>
+    <div class="slide-body">
+      <div class="grid2">
+        <div class="card card-direct">
+          <p class="card-title">Direct Speech</p>
+          <p class="quote">Tom said, <span class="hl-q">“I am tired.”</span></p>
+        </div>
+        <div class="card card-reported">
+          <p class="card-title">Reported Speech</p>
+          <p class="quote">Tom said <span class="hl-q">that</span> <span class="hl-pron">he</span> <span class="hl-tense">was</span> tired.</p>
+        </div>
+      </div>
+      <p class="p"><b>Three things change:</b></p>
+      <div class="grid3">
+        <div class="card center"><p class="quote hl-q">“ ”</p><p class="p muted">Quotation marks<br>disappear</p></div>
+        <div class="card center"><p class="quote"><span class="hl-pron">I → he</span></p><p class="p muted">Pronoun<br>changes</p></div>
+        <div class="card center"><p class="quote"><span class="hl-tense">am → was</span></p><p class="p muted">Tense<br>backshifts</p></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là slide “bản đồ” của cả bài. Chỉ vào từng chỗ được tô màu.</p>
+    <p>1. Bỏ dấu ngoặc kép, thêm <b>that</b>.<br>
+       2. Đại từ đổi theo người nói/người nghe: <b>I → he</b>.<br>
+       3. Thì lùi một bậc: <b>am → was</b>.</p>
+    <p>Nhấn mạnh: ba thay đổi này sẽ lặp lại ở mọi loại câu trong suốt bài.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — DEFINITION
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Definition</p><h2 class="s-title">What is Reported Speech?</h2></div>
+      <span class="badge">Member 1</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="card">
+        <p class="lead">Reported speech is used to report what another person said <b>without using their exact words</b>.</p>
+      </div>
+      <div class="row" style="justify-content:center;gap:1.2em;">
+        <span class="quote">“I am busy.”</span>
+        <span class="arrow-h">→</span>
+        <span class="quote">He said that he was busy.</span>
+      </div>
+      <div class="note">We keep the <b>meaning</b>, but we change the <b>form</b>.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Định nghĩa ngắn gọn: tường thuật lại lời người khác <b>không dùng nguyên văn</b>.</p>
+    <p>Nhấn mạnh cặp từ khoá: giữ <b>nghĩa</b> — đổi <b>hình thức</b>.</p>
+    <p>Cho thêm ví dụ nhanh: “I am busy” → He said that he was busy.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — LEARNING OBJECTIVES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Objectives</p><h2 class="s-title">Learning Objectives</h2></div>
+      <span class="badge">Member 1</span>
+    </header>
+    <div class="slide-body">
+      <p class="lead">By the end of this lesson, students can:</p>
+      <div class="grid2">
+        <ul class="bullets">
+          <li>Identify sentence types</li>
+          <li>Report requests</li>
+          <li>Report statements</li>
+          <li>Report questions</li>
+        </ul>
+        <ul class="bullets">
+          <li>Change pronouns</li>
+          <li>Change tenses (backshift)</li>
+          <li>Change time &amp; place expressions</li>
+          <li>Use correct word order</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đọc nhanh 7 mục tiêu, không cần giải thích sâu.</p>
+    <p>Nói với lớp: “Cuối buổi, các bạn sẽ làm được 7 việc này — và chúng ta sẽ kiểm tra bằng 2 game.”</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — THREE MAIN TYPES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Big picture</p><h2 class="s-title">Three Main Types</h2></div>
+      <span class="badge">Member 1</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="tree">
+        <div class="tree-root">REPORTED SPEECH</div>
+        <div class="tree-stem"></div>
+        <div class="tree-row">
+          <div class="tree-node">
+            <p class="tn-title">REQUEST</p>
+            <p class="tn-sub">asked/told + O + to V</p>
+            <p class="tn-ex">“Please sit down.”</p>
+          </div>
+          <div class="tree-node">
+            <p class="tn-title">STATEMENT</p>
+            <p class="tn-sub">said/told + that + S + V</p>
+            <p class="tn-ex">“I am tired.”</p>
+          </div>
+          <div class="tree-node">
+            <p class="tn-title">QUESTION</p>
+            <p class="tn-sub">asked + O + if / Wh + S + V</p>
+            <p class="tn-ex">“Where do you live?”</p>
+          </div>
+        </div>
+      </div>
+      <div class="note">Step 1 of every transformation: <b>identify the sentence type</b>.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là sơ đồ gốc của cả bài — vẽ lên bảng nếu có thể.</p>
+    <p>Ba nhánh: Request — Statement — Question. Mỗi nhánh có một công thức riêng.</p>
+    <p>Nhấn mạnh: <b>bước 1 luôn luôn là nhận diện loại câu</b>. Nhận diện sai → công thức sai.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — IDENTIFY
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Practice</p><h2 class="s-title">Identify the Type</h2></div>
+      <span class="badge">Member 1</span>
+    </header>
+    <div class="slide-body">
+      <ol class="numbered">
+        <li>“Please open the door.”</li>
+        <li>“I am tired.”</li>
+        <li>“Where do you live?”</li>
+      </ol>
+      <div class="question-box">Request, Statement or Question?</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Cho lớp 15 giây, gọi 3 bạn trả lời.</p>
+    <p>Đáp án: 1 — <b>Request</b> (có “please” + động từ nguyên mẫu). 2 — <b>Statement</b> (S + V, kể lại một sự việc). 3 — <b>Question</b> (bắt đầu bằng từ hỏi Wh-).</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — REQUEST
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 2 · Requests</p><h2 class="s-title">Request — Câu yêu cầu</h2></div>
+      <span class="badge">Member 2</span>
+    </header>
+    <div class="slide-body">
+      <div class="grid2">
+        <div class="card">
+          <p class="card-title">Positive</p>
+          <ul class="bullets">
+            <li>Please + V</li>
+            <li>Can / Could you please + V?</li>
+            <li>Will / Would you please + V?</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="card-title">Negative</p>
+          <ul class="bullets">
+            <li>Don't + V</li>
+          </ul>
+          <p class="quote muted">“Don't look at me like this.”</p>
+        </div>
+      </div>
+      <div class="note">Dấu hiệu nhận biết: <b>please</b>, <b>can / could / will / would you</b>, hoặc <b>don't + V</b>.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Request = câu yêu cầu, ra lệnh, đề nghị ai làm hoặc không làm gì.</p>
+    <p>Dạng khẳng định thường có “please” hoặc “Can/Could you please…”. Dạng phủ định bắt đầu bằng “Don't + V”.</p>
+    <p>Hỏi lớp: “Câu nào trong slide 7 là Request?” → “Please open the door.”</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — REPORTING REQUESTS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 2 · Requests</p><h2 class="s-title">Reporting Requests</h2></div>
+      <span class="badge">Member 2</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">“Please sit down,” he said to me.</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">He <span class="hl-tense">asked</span> <span class="hl-pron">me</span> <span class="hl-time">to sit down</span>.</p>
+      </div>
+      <div class="formula">asked / told + <em>O</em> + <em>to V</em></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là công thức quan trọng nhất của phần Request.</p>
+    <p>Ba thành phần: <b>động từ tường thuật</b> (asked/told) + <b>tân ngữ</b> (me) + <b>to + V</b> (to sit down).</p>
+    <p>Lưu ý: “said to me” chuyển thành “asked me” hoặc “told me”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — POSITIVE REQUEST
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 2 · Requests</p><h2 class="s-title">Positive Request</h2></div>
+      <span class="badge">Member 2</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="quote">“Please close the window,” Peter said to me.</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="quote">Peter <span class="hl-tense">asked</span> <span class="hl-pron">me</span> <span class="hl-time">to close</span> the window.</p>
+      </div>
+      <div class="row">
+        <span class="chip hl-tense">asked</span>
+        <span class="chip hl-pron">me</span>
+        <span class="chip hl-time">to close</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đi từng bước: “said to me” → “asked me”; bỏ “please”; động từ chính “close” → “to close”.</p>
+    <p>Nhấn mạnh: <b>không lùi thì</b> ở câu Request. Đây là lỗi học sinh hay mắc nhất.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 11 — NEGATIVE REQUEST
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 2 · Requests</p><h2 class="s-title">Negative Request</h2></div>
+      <span class="badge">Member 2</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="quote">“Don't open the door,” she said to me.</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="quote">She <span class="hl-tense">asked</span> <span class="hl-pron">me</span> <span class="hl-time">not to open</span> the door.</p>
+      </div>
+      <div class="formula">asked / told + <em>O</em> + <em>not to V</em></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Câu phủ định: “Don't + V” → “not to + V”.</p>
+    <p>Cảnh báo lỗi thường gặp: <span class="hl-del">She asked me to not open</span> — sai vị trí “not”. Đúng là <b>not to open</b>.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 12 — REQUEST SUMMARY
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 2 · Summary</p><h2 class="s-title">Request — Summary</h2></div>
+      <span class="badge">Member 2</span>
+    </header>
+    <div class="slide-body">
+      <table class="tbl">
+        <thead><tr><th>Direct Speech</th><th>Reported Speech</th></tr></thead>
+        <tbody>
+          <tr><td>V …</td><td><b>to + V</b></td></tr>
+          <tr><td>Don't + V …</td><td><b>not to + V</b></td></tr>
+        </tbody>
+      </table>
+      <div class="note">⚠️ Requests <b>do not</b> use the normal tense backshift.</div>
+      <div class="grid2">
+        <div class="card card-direct"><p class="quote">“Open the door.”</p></div>
+        <div class="card card-reported"><p class="quote">He told me to open the door.</p></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Chốt lại phần Request bằng bảng 2 dòng — rất dễ nhớ.</p>
+    <p>Nhắc lại lần nữa: Request <b>không lùi thì</b>.</p>
+    <p>Chuyển ý sang Member 3: “Bây giờ chúng ta sang dạng phổ biến nhất — Statement.”</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 13 — STATEMENTS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 3 · Statements</p><h2 class="s-title">Statements — Câu trần thuật</h2></div>
+      <span class="badge">Member 3</span>
+    </header>
+    <div class="slide-body">
+      <div class="grid2">
+        <div class="card card-direct">
+          <p class="card-title">Direct</p>
+          <p class="quote">She said, “I am busy.”</p>
+        </div>
+        <div class="card card-reported">
+          <p class="card-title">Reported</p>
+          <p class="quote">She said <span class="hl-q">that</span> <span class="hl-pron">she</span> <span class="hl-tense">was</span> busy.</p>
+        </div>
+      </div>
+      <div class="formula">S + said + <em>that</em> + S + V …</div>
+      <p class="p muted center">Statement = câu kể, thông báo một điều gì đó. Dạng: <b>S + V + …</b></p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Statement là dạng phổ biến nhất trong đề thi.</p>
+    <p>Nhận diện: câu trực tiếp có dạng S + V, không có “please”, không có dấu hỏi.</p>
+    <p>Công thức cơ bản: said + that + S + V.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 14 — SAY
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 3 · Statements</p><h2 class="s-title">SAY</h2></div>
+      <span class="badge">Member 3</span>
+    </header>
+    <div class="slide-body">
+      <div class="formula">say + something</div>
+      <div class="grid2">
+        <div class="card card-reported"><p class="quote">He said that he was tired.</p></div>
+        <div class="card card-reported"><p class="quote">Linda said that she liked English.</p></div>
+      </div>
+      <div class="note"><b>say</b> không cần tân ngữ chỉ người. Nếu muốn nêu người nghe, phải dùng <b>say to + O</b>.</div>
+      <p class="p center muted">She said to me that she was tired. &nbsp;✓</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>SAY đi trực tiếp với nội dung được nói ra.</p>
+    <p>Nếu muốn nhắc đến người nghe thì phải thêm “to”: say to me / say to him.</p>
+    <p>Trong Reported Speech, chúng ta thường dùng “said that…”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 15 — TELL
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 3 · Statements</p><h2 class="s-title">TELL</h2></div>
+      <span class="badge">Member 3</span>
+    </header>
+    <div class="slide-body">
+      <div class="formula">tell + someone + something</div>
+      <div class="card card-reported"><p class="quote">He told <b>me</b> that he was tired.</p></div>
+      <div class="card" style="background:#fdeeed;border-left:.34em solid var(--rose);">
+        <p class="quote">❌ He told that he was tired.</p>
+        <p class="p muted">TELL luôn cần một tân ngữ chỉ người.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>TELL bắt buộc phải có tân ngữ chỉ người: tell me / tell him / tell her.</p>
+    <p>Lỗi kinh điển: “He told that…” — thiếu tân ngữ. Chỉ vào ô đỏ và nhấn mạnh.</p>
+    <p>Mẹo nhớ: <b>tell = nói với ai</b>, nên phải có “ai”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 16 — SAY VS TELL
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 3 · Statements</p><h2 class="s-title">SAY vs TELL</h2></div>
+      <span class="badge">Member 3</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="grid2">
+        <div class="card card-direct">
+          <p class="card-title">SAY</p>
+          <p class="quote">say + something</p>
+          <p class="p muted">He said that he was tired.</p>
+          <p class="p muted">She said to me that she was busy.</p>
+        </div>
+        <div class="card card-reported">
+          <p class="card-title">TELL</p>
+          <p class="quote">tell + someone + something</p>
+          <p class="p muted">He told me that he was tired.</p>
+          <p class="p muted">She told John that she was busy.</p>
+        </div>
+      </div>
+      <div class="question-box">SAY + (to O) + that … &nbsp;&nbsp;|&nbsp;&nbsp; TELL + O + that …</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đặt hai động từ cạnh nhau để so sánh trực tiếp.</p>
+    <p>Nhấn mạnh: <b>tell luôn có tân ngữ</b>, <b>say thì không bắt buộc</b>.</p>
+    <p>Cho lớp đọc to 2 câu mẫu để nhớ nhịp.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 17 — STATEMENT EXAMPLE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 3 · Statements</p><h2 class="s-title">Statement — Full Example</h2></div>
+      <span class="badge">Member 3</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">She said to her boss, “I'll never forget working with you.”</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">She <span class="hl-tense">told</span> her boss that <span class="hl-pron">she</span> <span class="hl-tense">would</span> never forget working with <span class="hl-pron">him</span>.</p>
+      </div>
+      <div class="row">
+        <span class="chip hl-tense">said to → told</span>
+        <span class="chip hl-pron">I → she</span>
+        <span class="chip hl-tense">will → would</span>
+        <span class="chip hl-pron">you → him</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là ví dụ “đủ bộ” — đi qua từng bước như trong tài liệu.</p>
+    <p>Bước 1: said to her boss → told her boss.<br>
+       Bước 2: will → would.<br>
+       Bước 3: I → she; you → him (vì “boss” là nam).</p>
+    <p>Nhấn mạnh: đại từ phụ thuộc vào <b>người nói</b> và <b>người nghe</b>, không có công thức cố định.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 18 — STATEMENT SUMMARY
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 3 · Summary</p><h2 class="s-title">Statement — Summary</h2></div>
+      <span class="badge">Member 3</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="formula">said + that + clause</div>
+      <div class="formula">told + <em>object</em> + that + clause</div>
+      <div class="grid2">
+        <div class="card card-reported"><p class="quote">He said that he was tired.</p></div>
+        <div class="card card-reported"><p class="quote">He told me that he was tired.</p></div>
+      </div>
+      <div class="note">“that” có thể được lược bỏ trong văn nói, nhưng nên viết đầy đủ khi làm bài.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Chốt phần Statement bằng 2 công thức.</p>
+    <p>Nhắc: “that” có thể bỏ trong văn nói, nhưng khi làm bài thi nên viết đầy đủ để an toàn.</p>
+    <p>Chuyển sang Member 4: Questions — phần dễ sai nhất.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 19 — THREE TYPES OF QUESTIONS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Questions</p><h2 class="s-title">Three Types of Questions</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="grid3">
+        <div class="card center">
+          <p class="card-title">1 · Yes/No</p>
+          <p class="quote">“Do you remember me?”</p>
+          <p class="p muted">Trả lời Yes / No</p>
+        </div>
+        <div class="card center">
+          <p class="card-title">2 · Or</p>
+          <p class="quote">“Tea or coffee?”</p>
+          <p class="p muted">Đưa ra lựa chọn</p>
+        </div>
+        <div class="card center">
+          <p class="card-title">3 · Wh-</p>
+          <p class="quote">“Where do you live?”</p>
+          <p class="p muted">Hỏi thông tin</p>
+        </div>
+      </div>
+      <div class="note">Cả ba loại đều phải chuyển về <b>trật tự câu kể</b>: S + V.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Phân biệt 3 loại câu hỏi trước khi học công thức.</p>
+    <p>Nhấn mạnh điểm chung quan trọng nhất: khi tường thuật, <b>không còn đảo trợ động từ</b>.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 20 — YES/NO QUESTIONS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Questions</p><h2 class="s-title">Yes/No Questions</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">“Do you remember me?” Tom said to Mai.</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">Tom asked Mai <span class="hl-q">if</span> <span class="hl-pron">she</span> <span class="hl-tense">remembered</span> <span class="hl-pron">him</span>.</p>
+      </div>
+      <div class="formula">asked + <em>O</em> + <em>if / whether</em> + S + V …</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Câu hỏi Yes/No: thêm <b>if</b> hoặc <b>whether</b> làm từ nối.</p>
+    <p>Đi từng bước: bỏ “do” → you → she → remember → remembered → me → him.</p>
+    <p>Lưu ý: “said to Mai” → “asked Mai”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 21 — YES/NO STEP BY STEP
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Questions</p><h2 class="s-title">Yes/No — Step by Step</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct"><p class="quote">“Do you like English?”</p></div>
+      <div class="arrow">↓</div>
+      <div class="stack">
+        <div class="card"><p class="p"><b>1.</b> Add <span class="hl-q">if / whether</span></p></div>
+        <div class="card"><p class="p"><b>2.</b> Change word order → <span class="hl-tense">S + V</span> (no inversion)</p></div>
+        <div class="card"><p class="p"><b>3.</b> Change tense if necessary</p></div>
+        <div class="card"><p class="p"><b>4.</b> Change pronouns</p></div>
+      </div>
+      <div class="card card-reported"><p class="quote">He asked me <span class="hl-q">if</span> <span class="hl-pron">I</span> <span class="hl-tense">liked</span> English.</p></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là quy trình 4 bước, có thể áp dụng cho mọi câu hỏi Yes/No.</p>
+    <p>Cho lớp tự làm lại với câu khác: “Are you a student?” → He asked me if I was a student.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 22 — IMPORTANT RULE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Key rule</p><h2 class="s-title">No Question Word Order!</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="grid2">
+        <div class="card card-direct">
+          <p class="card-title">Direct</p>
+          <p class="quote">Where <b>do</b> you live?</p>
+        </div>
+        <div class="card card-reported">
+          <p class="card-title">Reported</p>
+          <p class="quote">He asked where I lived.</p>
+        </div>
+      </div>
+      <div class="card" style="background:#fdeeed;border-left:.34em solid var(--rose);">
+        <p class="quote">❌ He asked where <b>did</b> I live.</p>
+      </div>
+      <div class="question-box" style="font-size:1.25em;">QUESTION ORDER &nbsp;→&nbsp; STATEMENT ORDER</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là lỗi sai phổ biến nhất của học sinh. Dành nhiều thời gian cho slide này.</p>
+    <p>Trong câu hỏi trực tiếp: “Where do you live?” — có đảo trợ động từ.<br>
+       Trong câu tường thuật: “where I lived” — trật tự câu kể, không có “do/did”.</p>
+    <p>Cho lớp đọc to câu sai và câu đúng để so sánh.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 23 — OR QUESTIONS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Questions</p><h2 class="s-title">Or-Questions</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">“Do you want to be a pilot or a doctor?”</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">His mother asked him <span class="hl-q">whether</span> <span class="hl-pron">he</span> <span class="hl-tense">wanted</span> to be a pilot <b>or</b> a doctor.</p>
+      </div>
+      <div class="formula">asked + <em>O</em> + <em>whether</em> + S + V + … + <em>or</em> + …</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Câu hỏi lựa chọn dùng <b>whether … or …</b>, KHÔNG dùng “if” khi đã có “or”.</p>
+    <p>Ví dụ thêm: “Are you staying here or going home?” → She asked me whether I was staying there or going home.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 24 — WH QUESTIONS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Questions</p><h2 class="s-title">Wh- Questions</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">“Where do you live?” he asked her.</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">He asked her <span class="hl-q">where</span> <span class="hl-pron">she</span> <span class="hl-tense">lived</span>.</p>
+      </div>
+      <div class="formula">asked + <em>O</em> + <em>Wh-word</em> + S + V …</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Wh-question giữ nguyên từ hỏi, nhưng bỏ trợ động từ và đưa về trật tự S + V.</p>
+    <p>Nhấn mạnh: <b>do / does / did</b> biến mất hoàn toàn.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 25 — WH EXAMPLES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Questions</p><h2 class="s-title">Wh- Examples</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body">
+      <div class="card">
+        <p class="quote">“What are you doing?” &nbsp;→&nbsp; He asked me <span class="hl-tense">what I was doing</span>.</p>
+      </div>
+      <div class="card">
+        <p class="quote">“When will you arrive?” &nbsp;→&nbsp; She asked me <span class="hl-tense">when I would arrive</span>.</p>
+      </div>
+      <div class="card">
+        <p class="quote">“Why did you leave?” &nbsp;→&nbsp; He asked me <span class="hl-tense">why I had left</span>.</p>
+      </div>
+      <div class="note">Chú ý lùi thì: <b>are → was</b>, <b>will → would</b>, <b>did leave → had left</b>.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Ba ví dụ tăng dần độ khó.</p>
+    <p>Ví dụ 3 là khó nhất: “did you leave” → “I had left” (quá khứ đơn → quá khứ hoàn thành).</p>
+    <p>Nhắc lại: bỏ “did”, không đảo trợ động từ.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 26 — QUESTION SUMMARY
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 4 · Summary</p><h2 class="s-title">Question — Summary</h2></div>
+      <span class="badge">Member 4</span>
+    </header>
+    <div class="slide-body">
+      <table class="tbl">
+        <thead><tr><th>Type</th><th>Reported Structure</th></tr></thead>
+        <tbody>
+          <tr><td>Yes / No</td><td><b>if / whether</b> + S + V</td></tr>
+          <tr><td>Or</td><td><b>whether</b> + S + V + … <b>or</b> …</td></tr>
+          <tr><td>Wh-</td><td><b>Wh-</b> + S + V</td></tr>
+        </tbody>
+      </table>
+      <div class="question-box">NO INVERSION — always S + V</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Chốt phần Question bằng bảng 3 dòng.</p>
+    <p>Nhắc lại câu thần chú: <b>NO INVERSION</b>.</p>
+    <p>Chuyển sang Member 5: Pronouns + Tense.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 27 — PRONOUN CHANGES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Pronouns</p><h2 class="s-title">Pronoun Changes</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body">
+      <p class="lead">Pronouns change according to <b>the speaker</b> and <b>the listener</b>.</p>
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">Tom said, “<span class="hl-pron">I</span> love <span class="hl-pron">my</span> dog.”</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">Tom said that <span class="hl-pron">he</span> loved <span class="hl-pron">his</span> dog.</p>
+      </div>
+      <div class="note">Ask three questions: <b>Who is speaking? Who is listening? Who is being talked about?</b></div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đại từ KHÔNG có công thức cố định kiểu “I luôn → he”.</p>
+    <p>Phải dựa vào: người nói là ai, người nghe là ai, người được nhắc tới là ai.</p>
+    <p>Cho ví dụ: Tom said to Mai, “I love you.” → Tom told Mai that he loved her.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 28 — PRONOUN TABLE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Pronouns</p><h2 class="s-title">Pronoun Table</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body">
+      <table class="tbl tight">
+        <thead>
+          <tr>
+            <th>Person</th><th>Subject</th><th>Object</th>
+            <th>Poss. adj</th><th>Poss. pron</th><th>Reflexive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1st singular</td><td><b>I</b></td><td>me</td><td>my</td><td>mine</td><td>myself</td></tr>
+          <tr><td>2nd singular</td><td><b>you</b></td><td>you</td><td>your</td><td>yours</td><td>yourself</td></tr>
+          <tr><td>3rd singular</td><td><b>he / she / it</b></td><td>him / her / it</td><td>his / her / its</td><td>his / hers / its</td><td>himself / herself / itself</td></tr>
+          <tr><td>1st plural</td><td><b>we</b></td><td>us</td><td>our</td><td>ours</td><td>ourselves</td></tr>
+          <tr><td>2nd plural</td><td><b>you</b></td><td>you</td><td>your</td><td>yours</td><td>yourselves</td></tr>
+          <tr><td>3rd plural</td><td><b>they</b></td><td>them</td><td>their</td><td>theirs</td><td>themselves</td></tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span><i class="dot hl-pron"></i> Đổi theo người nói</span>
+        <span><i class="dot hl-tense"></i> Đổi theo người nghe</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Cho lớp quan sát bảng, không cần học thuộc lòng ngay.</p>
+    <p>Mẹo: xác định ngôi trước (1/2/3), sau đó mới chọn dạng (subject / object / possessive / reflexive).</p>
+    <p>Nhấn mạnh: trong Reported Speech, chủ yếu đổi <b>subject</b>, <b>object</b> và <b>possessive adjective</b>.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 29 — PRONOUN EXAMPLE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Pronouns</p><h2 class="s-title">Pronoun — Example</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">Mary said to John, “<span class="hl-pron">I</span> will help <span class="hl-pron">you</span>.”</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">Mary told John that <span class="hl-pron">she</span> would help <span class="hl-pron">him</span>.</p>
+      </div>
+      <div class="row">
+        <span class="chip hl-pron">I → she</span>
+        <span class="chip hl-pron">you → him</span>
+        <span class="chip hl-tense">will → would</span>
+        <span class="chip hl-tense">said to → told</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Hỏi lớp trước: “I là ai? you là ai?” → I là Mary, you là John.</p>
+    <p>Vì Mary là nữ → I → she. Vì John là nam → you → him.</p>
+    <p>Nhấn mạnh lại: phải xác định người nói / người nghe trước khi đổi đại từ.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 30 — TENSE BACKSHIFT
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Tense</p><h2 class="s-title">Tense Backshift</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="flow">
+        <div class="flow-box"><p class="fb-t">PRESENT</p><p class="fb-d">hiện tại</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><p class="fb-t">PAST</p><p class="fb-d">quá khứ</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><p class="fb-t">PAST PERFECT</p><p class="fb-d">quá khứ hoàn thành</p></div>
+      </div>
+      <div class="note">When the reporting verb is in the <b>past</b> (said, told, asked…), the tense usually moves <b>one step back</b>.</div>
+      <p class="p center muted">Nếu động từ tường thuật ở hiện tại (says, tells), thì <b>không</b> lùi thì.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là quy tắc trung tâm của phần Tense.</p>
+    <p>Nói rõ điều kiện: chỉ lùi thì khi động từ tường thuật ở <b>quá khứ</b>.</p>
+    <p>Ví dụ: “Tom says he is tired.” — không lùi thì.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 31 — TENSE TABLE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Tense</p><h2 class="s-title">Tense Change Table</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body">
+      <table class="tbl">
+        <thead><tr><th>Direct Speech</th><th>Reported Speech</th></tr></thead>
+        <tbody>
+          <tr><td>Present Simple</td><td><b>Past Simple</b></td></tr>
+          <tr><td>Present Continuous</td><td><b>Past Continuous</b></td></tr>
+          <tr><td>will + V</td><td><b>would + V</b></td></tr>
+          <tr><td>Present Perfect</td><td><b>Past Perfect</b></td></tr>
+          <tr><td>Past Simple</td><td><b>Past Perfect</b></td></tr>
+          <tr><td>Past Continuous</td><td><b>Past Perfect Continuous</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là bảng tra cứu — không cần đọc hết, chỉ cần chỉ ra 2 nhóm chính:</p>
+    <p>Nhóm 1: hiện tại → quá khứ. Nhóm 2: quá khứ → quá khứ hoàn thành.</p>
+    <p>Nhấn mạnh: <b>will → would</b> là cặp hay gặp nhất trong đề thi.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 32 — TENSE EXAMPLES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Tense</p><h2 class="s-title">Tense — Examples</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body">
+      <div class="card">
+        <p class="quote">“I work hard.” &nbsp;→&nbsp; He said that <span class="hl-tense">he worked</span> hard.</p>
+      </div>
+      <div class="card">
+        <p class="quote">“I am studying.” &nbsp;→&nbsp; She said that <span class="hl-tense">she was studying</span>.</p>
+      </div>
+      <div class="card">
+        <p class="quote">“I will call you.” &nbsp;→&nbsp; He said that <span class="hl-tense">he would call me</span>.</p>
+      </div>
+      <div class="note">Mỗi câu có <b>2 thay đổi</b>: đại từ + thì.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Cho lớp tự nói lại từng bước trước khi hiện đáp án.</p>
+    <p>Câu 3: “you” → “me” vì người nghe chính là người tường thuật.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 33 — PAST TENSE EXAMPLES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 5 · Tense</p><h2 class="s-title">Past Tense — Examples</h2></div>
+      <span class="badge">Member 5</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="quote">“I saw Tom.”</p>
+      </div>
+      <div class="card card-reported">
+        <p class="quote">She said that <span class="hl-tense">she had seen</span> Tom.</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-direct">
+        <p class="quote">“I was studying.”</p>
+      </div>
+      <div class="card card-reported">
+        <p class="quote">He said that <span class="hl-tense">he had been studying</span>.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Hai trường hợp khó nhất của bảng lùi thì.</p>
+    <p>Quá khứ đơn → quá khứ hoàn thành: saw → had seen.<br>
+       Quá khứ tiếp diễn → quá khứ hoàn thành tiếp diễn: was studying → had been studying.</p>
+    <p>Cho lớp lặp lại to hai câu.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 34 — TIME & PLACE EXPRESSIONS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Time &amp; Place</p><h2 class="s-title">Time &amp; Place Expressions</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="card">
+        <p class="lead">Time and place expressions <b>may change</b> when we report speech.</p>
+      </div>
+      <div class="grid2">
+        <div class="card card-direct">
+          <p class="card-title">Direct (now, here)</p>
+          <p class="quote">“I will do it <b>tomorrow</b>.”</p>
+        </div>
+        <div class="card card-reported">
+          <p class="card-title">Reported (then, there)</p>
+          <p class="quote">He said he would do it <b>the following day</b>.</p>
+        </div>
+      </div>
+      <div class="note">Vì góc nhìn về thời gian và nơi chốn đã thay đổi khi ta tường thuật lại.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Giải thích logic: khi tường thuật, ta đang ở một thời điểm và nơi chốn khác, nên các từ chỉ thời gian/nơi chốn phải đổi theo.</p>
+    <p>Ví dụ: “tomorrow” nói hôm qua → hôm nay phải gọi là “the following day”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 35 — CHANGES
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Time &amp; Place</p><h2 class="s-title">Changes — Bảng đổi từ</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body">
+      <div class="pairs">
+        <div class="pair"><span class="from">this / these</span><span class="to">that / those</span></div>
+        <div class="pair"><span class="from">here</span><span class="to">there</span></div>
+        <div class="pair"><span class="from">now</span><span class="to">then</span></div>
+        <div class="pair"><span class="from">today</span><span class="to">that day</span></div>
+        <div class="pair"><span class="from">tonight</span><span class="to">that night</span></div>
+        <div class="pair"><span class="from">yesterday</span><span class="to">the day before</span></div>
+        <div class="pair"><span class="from">tomorrow</span><span class="to">the following day</span></div>
+        <div class="pair"><span class="from">ago</span><span class="to">before</span></div>
+        <div class="pair"><span class="from">last …</span><span class="to">the … before</span></div>
+        <div class="pair"><span class="from">next …</span><span class="to">the following …</span></div>
+      </div>
+      <div class="note">Học theo cặp — nhớ một cặp là nhớ được cả hàng.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Cho lớp đọc to từng cặp theo nhịp: this–that, here–there, now–then…</p>
+    <p>Mẹo nhớ: mọi thứ “gần” (this, here, now) chuyển thành “xa” (that, there, then).</p>
+    <p>Lưu ý: “yesterday” có 2 dạng chấp nhận: the day before / the previous day. “tomorrow”: the day after / the following day.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 36 — COMPLETE EXAMPLE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Time &amp; Place</p><h2 class="s-title">Complete Example</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body">
+      <div class="card card-direct">
+        <p class="card-title">Direct</p>
+        <p class="quote">Sarah said, “<span class="hl-pron">I</span> <span class="hl-tense">will</span> meet <span class="hl-pron">you</span> <span class="hl-time">here</span> <span class="hl-time">tomorrow</span>.”</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="card-title">Reported</p>
+        <p class="quote">Sarah said that <span class="hl-pron">she</span> <span class="hl-tense">would</span> meet <span class="hl-pron">me</span> <span class="hl-time">there</span> <span class="hl-time">the following day</span>.</p>
+      </div>
+      <div class="row">
+        <span class="chip hl-pron">I → she</span>
+        <span class="chip hl-tense">will → would</span>
+        <span class="chip hl-pron">you → me</span>
+        <span class="chip hl-time">here → there</span>
+        <span class="chip hl-time">tomorrow → the following day</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là ví dụ “tổng hợp” — có đủ đại từ, thì, thời gian, nơi chốn.</p>
+    <p>Đi từng chip một và giải thích lý do đổi.</p>
+    <p>Đây cũng chính là dạng câu sẽ xuất hiện trong Game 2.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 37 — GAME 1
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Game 1</p><h2 class="s-title">Reported Speech Challenge</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body vcenter">
+      <ul class="rules">
+        <li>👥 Teams compete</li>
+        <li>❓ 3 questions</li>
+        <li>⭐ 2 points each</li>
+        <li>⏱️ Limited answering time</li>
+        <li>✍️ Write the complete reported sentence</li>
+        <li>🏆 Highest score wins</li>
+      </ul>
+      <div class="question-box">Are you ready? Let's go!</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Chia lớp thành 2–4 đội. Mỗi đội cử một thư ký viết câu trả lời.</p>
+    <p>Mỗi câu 2 điểm. Đội nhanh và đúng nhất được cộng điểm.</p>
+    <p>Nhấn nút “Show Answer” sau khi hết thời gian để kiểm tra.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 38 — GAME 1 — Q1
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Game 1 · Question 1</p><h2 class="s-title">Change into reported speech</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.15em;">
+        “I am very busy,” Linda said.
+      </div>
+      <p class="p muted center">Change into reported speech. &nbsp;⏱️ 20 seconds</p>
+      <div>
+        <button class="btn-reveal" type="button">Show Answer</button>
+      </div>
+      <div class="answer is-hidden">
+        Linda said that she was very busy.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án: <b>Linda said that she was very busy.</b></p>
+    <p>Giải thích: I → she (Linda là nữ); am → was (lùi thì).</p>
+    <p>Cho lớp 20 giây, sau đó bấm “Show Answer”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 39 — GAME 1 — Q2
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Game 1 · Question 2</p><h2 class="s-title">Change into reported speech</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.15em;">
+        “Please close the door,” Peter said to me.
+      </div>
+      <p class="p muted center">Change into reported speech. &nbsp;⏱️ 20 seconds</p>
+      <div>
+        <button class="btn-reveal" type="button">Show Answer</button>
+      </div>
+      <div class="answer is-hidden">
+        Peter asked me to close the door.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án: <b>Peter asked me to close the door.</b></p>
+    <p>Giải thích: đây là Request → asked + me + to V. <b>Không lùi thì.</b></p>
+    <p>Đây là câu hay bị làm sai nhất — nhấn mạnh lại.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 40 — GAME 1 — Q3
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 6 · Game 1 · Question 3</p><h2 class="s-title">Change into reported speech</h2></div>
+      <span class="badge">Member 6</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.15em;">
+        “Where did you buy this bag?” Anna asked me.
+      </div>
+      <p class="p muted center">Change into reported speech. &nbsp;⏱️ 25 seconds</p>
+      <div>
+        <button class="btn-reveal" type="button">Show Answer</button>
+      </div>
+      <div class="answer is-hidden">
+        Anna asked me where I had bought that bag.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án: <b>Anna asked me where I had bought that bag.</b></p>
+    <p>Giải thích: bỏ “did”, về trật tự S + V; did buy → had bought (quá khứ đơn → quá khứ hoàn thành); this → that.</p>
+    <p>Đây là câu khó nhất của Game 1 — cho thêm 5 giây.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 41 — THREE STEPS
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Final review</p><h2 class="s-title">Three Steps</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="flow">
+        <div class="flow-box">
+          <p class="fb-n">STEP 1</p>
+          <p class="fb-t">IDENTIFY</p>
+          <p class="fb-d">Request / Statement / Question</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          <p class="fb-n">STEP 2</p>
+          <p class="fb-t">CHANGE</p>
+          <p class="fb-d">Pronouns + Tense + Time / Place</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          <p class="fb-n">STEP 3</p>
+          <p class="fb-t">CHECK</p>
+          <p class="fb-d">Reporting verb + Word order + Grammar</p>
+        </div>
+      </div>
+      <div class="note">Đây là quy trình 3 bước áp dụng cho <b>mọi</b> câu Reported Speech.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là “kim chỉ nam” cho cả bài. Cho lớp ghi lại 3 bước này.</p>
+    <p>Bước 1 — nhận diện loại câu.<br>
+       Bước 2 — đổi đại từ, lùi thì, đổi thời gian/nơi chốn.<br>
+       Bước 3 — kiểm tra lại động từ tường thuật, trật tự câu, ngữ pháp.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 42 — MASTER FORMULA
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Final review</p><h2 class="s-title">Master Formula</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body">
+      <div class="formula-row">
+        <span class="formula-label">Request</span>
+        <span class="formula bar">asked / told + O + <em>to V</em> &nbsp;/&nbsp; <em>not to V</em></span>
+      </div>
+      <div class="formula-row">
+        <span class="formula-label">Statement</span>
+        <span class="formula bar">said / told + (O) + <em>that</em> + S + V</span>
+      </div>
+      <div class="formula-row">
+        <span class="formula-label">Yes / No</span>
+        <span class="formula bar">asked + O + <em>if / whether</em> + S + V</span>
+      </div>
+      <div class="formula-row">
+        <span class="formula-label">Or</span>
+        <span class="formula bar">asked + O + <em>whether</em> + S + V + … <em>or</em> …</span>
+      </div>
+      <div class="formula-row">
+        <span class="formula-label">Wh-</span>
+        <span class="formula bar">asked + O + <em>Wh-word</em> + S + V</span>
+      </div>
+      <div class="note">Sau khi áp công thức, luôn kiểm tra: <b>PRONOUN → TENSE → TIME / PLACE</b>.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đây là slide “tổng kết công thức” — có thể chụp ảnh lại.</p>
+    <p>Đọc lần lượt 5 dòng, nhấn mạnh dòng Yes/No và Wh- vì hay sai trật tự câu.</p>
+    <p>Nhắc câu chốt: PRONOUN → TENSE → TIME/PLACE.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 43 — FINAL QUIZ
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Game 2</p><h2 class="s-title">Final Quiz</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body vcenter">
+      <ul class="rules">
+        <li>❓ 5 questions</li>
+        <li>⭐ 1 point each</li>
+        <li>⏱️ 10–15 seconds per question</li>
+        <li>🔤 Choose A / B / C / D</li>
+      </ul>
+      <div class="question-box">Click the answer on screen — Correct or Incorrect will appear instantly.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Cả lớp cùng chơi. Người thuyết trình bấm trực tiếp vào đáp án trên slide.</p>
+    <p>Sau mỗi câu, đọc phần giải thích (explanation) bên dưới.</p>
+    <p>Nhấn phím <b>R</b> để reset câu hỏi nếu muốn chơi lại.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 44 — QUESTION 1
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Quiz · Question 1</p><h2 class="s-title">Choose the correct answer</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.05em;">
+        “Please help me with this exercise,” Mary said to Tom.<br>
+        Mary asked Tom ____.
+      </div>
+      <div class="options">
+        <button class="opt" data-correct="false" type="button">A. help her with this exercise</button>
+        <button class="opt" data-correct="true"  type="button">B. to help her with that exercise</button>
+        <button class="opt" data-correct="false" type="button">C. helping her with that exercise</button>
+        <button class="opt" data-correct="false" type="button">D. that he helped her with that exercise</button>
+      </div>
+      <p class="feedback"></p>
+      <div class="explain is-hidden">
+        <b>B</b> — Request: asked + O + <b>to V</b>. Đại từ: me → her; this → that. Không lùi thì.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án <b>B</b>.</p>
+    <p>Loại A vì thiếu “to” và chưa đổi “this → that”. Loại C vì dùng V-ing. Loại D vì dùng mệnh đề “that”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 45 — QUESTION 2
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Quiz · Question 2</p><h2 class="s-title">Choose the correct answer</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.05em;">
+        “I am studying English now,” Nam said.<br>
+        Nam said that he ____ English ____.
+      </div>
+      <div class="options">
+        <button class="opt" data-correct="false" type="button">A. is studying / now</button>
+        <button class="opt" data-correct="true"  type="button">B. was studying / then</button>
+        <button class="opt" data-correct="false" type="button">C. studied / now</button>
+        <button class="opt" data-correct="false" type="button">D. had studied / then</button>
+      </div>
+      <p class="feedback"></p>
+      <div class="explain is-hidden">
+        <b>B</b> — Present Continuous → Past Continuous (<b>am studying → was studying</b>); <b>now → then</b>.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án <b>B</b>.</p>
+    <p>Nhắc lại bảng lùi thì: hiện tại tiếp diễn → quá khứ tiếp diễn.</p>
+    <p>Và bảng đổi từ: now → then.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 46 — QUESTION 3
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Quiz · Question 3</p><h2 class="s-title">Choose the correct answer</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.05em;">
+        “Do you like this movie?” Anna asked me.<br>
+        Anna asked me ____.
+      </div>
+      <div class="options">
+        <button class="opt" data-correct="false" type="button">A. did I like that movie</button>
+        <button class="opt" data-correct="true"  type="button">B. if I liked that movie</button>
+        <button class="opt" data-correct="false" type="button">C. if did I like that movie</button>
+        <button class="opt" data-correct="false" type="button">D. whether did I like this movie</button>
+      </div>
+      <p class="feedback"></p>
+      <div class="explain is-hidden">
+        <b>B</b> — Yes/No question: <b>if / whether</b> + S + V. <b>Không đảo trợ động từ</b>; this → that; like → liked.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án <b>B</b>.</p>
+    <p>Loại A và D vì còn đảo trợ động từ (did). Loại D còn sai vì chưa đổi “this → that”.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 47 — QUESTION 4
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Quiz · Question 4</p><h2 class="s-title">Choose the correct answer</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.05em;">
+        “Where did you buy this book?” Peter asked me.<br>
+        Peter asked me ____.
+      </div>
+      <div class="options">
+        <button class="opt" data-correct="false" type="button">A. where did I buy that book</button>
+        <button class="opt" data-correct="true"  type="button">B. where I had bought that book</button>
+        <button class="opt" data-correct="false" type="button">C. where had I bought this book</button>
+        <button class="opt" data-correct="false" type="button">D. where I bought this book</button>
+      </div>
+      <p class="feedback"></p>
+      <div class="explain is-hidden">
+        <b>B</b> — Wh-question: Wh + <b>S + V</b> (no inversion). Quá khứ đơn → quá khứ hoàn thành: <b>did buy → had bought</b>; this → that.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án <b>B</b>.</p>
+    <p>Đây là câu kết hợp 3 lỗi: trật tự câu, lùi thì, đổi this → that.</p>
+    <p>Nhấn mạnh lại lần nữa: <b>NO INVERSION</b>.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 48 — QUESTION 5
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Quiz · Question 5</p><h2 class="s-title">Choose the correct answer</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body">
+      <div class="question-box" style="text-align:left;font-size:1.05em;">
+        “I will meet you here tomorrow,” Sarah said to John.<br>
+        Sarah told John that ____.
+      </div>
+      <div class="options">
+        <button class="opt" data-correct="true"  type="button">A. she would meet him there the following day</button>
+        <button class="opt" data-correct="false" type="button">B. she will meet him here tomorrow</button>
+        <button class="opt" data-correct="false" type="button">C. she would meet you there tomorrow</button>
+        <button class="opt" data-correct="false" type="button">D. she had met him there the following day</button>
+      </div>
+      <p class="feedback"></p>
+      <div class="explain is-hidden">
+        <b>A</b> — will → <b>would</b>; you → <b>him</b>; here → <b>there</b>; tomorrow → <b>the following day</b>.
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Đáp án <b>A</b> — câu này có 4 thay đổi, giống ví dụ ở slide 36.</p>
+    <p>Loại B: chưa lùi thì và chưa đổi từ chỉ thời gian/nơi chốn.<br>
+       Loại C: chưa đổi “you → him” và “tomorrow”.<br>
+       Loại D: lùi thì quá mức (had met).</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 49 — FINAL REVIEW
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Final review</p><h2 class="s-title">Checklist</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body vcenter">
+      <ul class="checklist">
+        <li>Requests</li>
+        <li>Statements</li>
+        <li>Questions</li>
+        <li>Pronouns</li>
+        <li>Tense backshift</li>
+        <li>Time / place expressions</li>
+        <li>Word order</li>
+        <li>Reporting verbs</li>
+      </ul>
+      <div class="note">Nếu làm được cả 8 mục này, bạn đã nắm trọn phần Reported Speech.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Điểm danh nhanh từng mục, hỏi lớp xem còn chỗ nào chưa rõ.</p>
+    <p>Nếu lớp còn yếu phần nào, quay lại slide tương ứng.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 50 — FINAL RULE
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head">
+      <div><p class="kicker">Member 7 · Final review</p><h2 class="s-title">Final Rule</h2></div>
+      <span class="badge">Member 7</span>
+    </header>
+    <div class="slide-body vcenter">
+      <div class="flow">
+        <div class="flow-box"><p class="fb-t">IDENTIFY</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><p class="fb-t">CHANGE</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box"><p class="fb-t">CHECK</p></div>
+      </div>
+      <div class="card card-direct">
+        <p class="quote">“Where are you going now?”</p>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="card card-reported">
+        <p class="quote">He asked me <span class="hl-q">where</span> <span class="hl-pron">I</span> <span class="hl-tense">was going</span> <span class="hl-time">then</span>.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Ví dụ cuối cùng, áp dụng đủ 3 bước và đủ 3 loại thay đổi.</p>
+    <p>Phân tích: Wh-question → bỏ đảo trợ động từ; you → I; are going → was going; now → then.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     SLIDE 51 — CLOSING
+     ============================================================ -->
+<section class="slide">
+  <div class="safe">
+    <header class="s-head"><div></div><span class="badge">Member 7</span></header>
+    <div class="slide-body vcenter center">
+      <h1 class="title-xl" style="font-size:2.9em;">THANK YOU!</h1>
+      <div class="title-rule"></div>
+      <p class="subtitle" style="font-size:1.2em;">Any questions?</p>
+    </div>
+  </div>
+  <aside class="notes">
+    <p>Cảm ơn cả lớp đã lắng nghe.</p>
+    <p>Mời lớp đặt câu hỏi. Nếu còn thời gian, có thể chơi lại Game 2.</p>
+  </aside>
+</section>
+
+</div><!-- /#deck -->
+</div><!-- /#stage -->
+
+<!-- ================= CONTROL BAR ================= -->
+<div id="controls">
+  <button class="cbtn" id="btnPrev" title="Previous slide (←)" aria-label="Previous slide">‹</button>
+  <span id="counter">1 / 51</span>
+  <button class="cbtn" id="btnNext" title="Next slide (→)" aria-label="Next slide">›</button>
+  <span class="divider"></span>
+  <button class="cbtn small" id="btnNotes"    title="Speaker Notes (N)">📝</button>
+  <button class="cbtn small" id="btnOverview" title="Overview (O)">▦</button>
+  <button class="cbtn small" id="btnHelp"     title="Keyboard shortcuts">⌨</button>
+  <button class="cbtn small" id="btnFull"     title="Fullscreen (F)">⛶</button>
+  <button class="cbtn small" id="btnHide"     title="Hide / show controls (H)">👁</button>
+</div>
+
+<!-- ================= SPEAKER NOTES PANEL ================= -->
+<aside id="notesPanel" class="panel" hidden>
+  <header>
+    <h3>Speaker Notes</h3>
+    <span id="notesSlide">1 / 51</span>
+    <span class="spacer"></span>
+    <button class="xbtn" id="notesClose" title="Close">✕</button>
+  </header>
+  <div id="notesBody"></div>
+</aside>
+
+<!-- ================= OVERVIEW ================= -->
+<div id="overview" hidden>
+  <header>
+    <h3>Overview</h3>
+    <span class="spacer"></span>
+    <button class="xbtn" id="ovClose" title="Close">✕</button>
+  </header>
+  <div id="ovGrid"></div>
+</div>
+
+<!-- ================= SHORTCUTS ================= -->
+<div id="help" class="panel" hidden>
+  <h3>Keyboard Shortcuts</h3>
+  <table>
+    <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Previous / Next slide</td></tr>
+    <tr><td><kbd>Space</kbd></td><td>Next slide</td></tr>
+    <tr><td><kbd>Home</kbd> / <kbd>End</kbd></td><td>First / Last slide</td></tr>
+    <tr><td><kbd>F</kbd></td><td>Fullscreen</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>Exit fullscreen / close panels</td></tr>
+    <tr><td><kbd>O</kbd></td><td>Overview</td></tr>
+    <tr><td><kbd>N</kbd></td><td>Speaker Notes</td></tr>
+    <tr><td><kbd>H</kbd></td><td>Hide / show controls</td></tr>
+    <tr><td><kbd>R</kbd></td><td>Reset current slide (games)</td></tr>
+    <tr><td><kbd>1</kbd> … <kbd>9</kbd></td><td>Jump to slide</td></tr>
+  </table>
+</div>
+
+<!-- ================= START SCREEN ================= -->
+<div id="startScreen">
+  <div class="start-card">
+    <p class="kicker">English Grammar</p>
+    <h1>REPORTED SPEECH</h1>
+    <p class="sub">Direct Speech &nbsp;→&nbsp; Reported Speech &nbsp;·&nbsp; 51 slides</p>
+    <button id="btnStart" type="button">▶&nbsp; Start Presentation</button>
+    <p class="start-hint">
+      <kbd>←</kbd><kbd>→</kbd> navigate &nbsp;·&nbsp; <kbd>F</kbd> fullscreen &nbsp;·&nbsp;
+      <kbd>O</kbd> overview &nbsp;·&nbsp; <kbd>N</kbd> notes
+    </p>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ============================================================
+     CONSTANTS
+     ============================================================ */
+  var SW = 1280;          // slide design width  (px)
+  var SH = 905;           // slide design height (px)  → 1.414 : 1
+  var BASE_FS = 21;       // base slide font-size at 100 %
+  var SCALES = [1, .96, .92, .88, .85, .82, .79, .76, .73, .70,
+                .67, .64, .61, .58, .55, .52, .50];
+
+  var deck      = document.getElementById('deck');
+  var slides    = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var total     = slides.length;
+  var cur       = 0;
+  var uiPinned  = false;
+  var hideTimer = null;
+
+  var elCounter    = document.getElementById('counter');
+  var elProgress   = document.getElementById('progress-fill');
+  var elNotesPanel = document.getElementById('notesPanel');
+  var elNotesBody  = document.getElementById('notesBody');
+  var elNotesSlide = document.getElementById('notesSlide');
+  var elOverview   = document.getElementById('overview');
+  var elOvGrid     = document.getElementById('ovGrid');
+  var elHelp       = document.getElementById('help');
+  var elStart      = document.getElementById('startScreen');
+
+  /* ============================================================
+     AUTO-FIT  —  everything must fit inside one A4 landscape slide
+     ============================================================ */
+  function isOverflowing(body) {
+    return body.scrollHeight > body.clientHeight + 1 ||
+           body.scrollWidth  > body.clientWidth  + 1;
+  }
+
+  function fitSlide(slide) {
+    var body = slide.querySelector('.slide-body');
+    if (!body) return;
+
+    for (var i = 0; i < SCALES.length; i++) {
+      slide.style.fontSize = (BASE_FS * SCALES[i]) + 'px';
+      if (!isOverflowing(body)) return;
+    }
+    // Last resort: smallest readable size (never below 10.5px)
+    slide.style.fontSize = (BASE_FS * 0.5) + 'px';
+  }
+
+  function fitAll() {
+    for (var i = 0; i < slides.length; i++) fitSlide(slides[i]);
+  }
+
+  /* ============================================================
+     DECK SCALING  (A4 landscape ratio is always preserved)
+     ============================================================ */
+  function layout() {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+
+    var sidePad = vw < 700 ? 10 : 48;
+    var bottom  = vw < 700 ? 78 : 106;
+
+    var s = Math.min((vw - sidePad * 2) / SW, (vh - bottom) / SH);
+    if (!isFinite(s) || s <= 0) s = 0.1;
+
+    deck.style.transform = 'scale(' + s + ')';
+  }
+
+  /* ============================================================
+     NAVIGATION
+     ============================================================ */
+  function go(index) {
+    if (index < 0) index = 0;
+    if (index > total - 1) index = total - 1;
+    cur = index;
+
+    for (var i = 0; i < total; i++) {
+      slides[i].classList.toggle('active', i === cur);
+    }
+
+    elCounter.textContent = (cur + 1) + ' / ' + total;
+    elProgress.style.width = ((cur + 1) / total * 100) + '%';
+
+    updateNotes();
+
+    // highlight current thumbnail
+    var thumbs = elOvGrid.querySelectorAll('.thumb');
+    for (var t = 0; t < thumbs.length; t++) {
+      thumbs[t].classList.toggle('current', t === cur);
+    }
+
+    try { localStorage.setItem('rs_slide', String(cur)); } catch (e) {}
+  }
+
+  function next() { go(cur + 1); }
+  function prev() { go(cur - 1); }
+
+  /* ============================================================
+     SPEAKER NOTES
+     ============================================================ */
+  function updateNotes() {
+    var noteEl = slides[cur].querySelector('.notes');
+    elNotesBody.innerHTML = noteEl ? noteEl.innerHTML
+                                   : '<p>No speaker notes for this slide.</p>';
+    elNotesSlide.textContent = (cur + 1) + ' / ' + total;
+  }
+
+  function openNotes() {
+    updateNotes();
+    elNotesPanel.hidden = false;
+    closeOverview();
+    elHelp.hidden = true;
+  }
+  function closeNotes() { elNotesPanel.hidden = true; }
+
+  /* ============================================================
+     OVERVIEW
+     ============================================================ */
+  var overviewBuilt = false;
+
+  function buildOverview() {
+    if (overviewBuilt) return;
+    var frag = document.createDocumentFragment();
+
+    slides.forEach(function (slide, i) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'thumb';
+
+      var box = document.createElement('div');
+      box.className = 'thumb-box';
+
+      var clone = slide.cloneNode(true);
+      clone.classList.add('active');
+      clone.removeAttribute('id');
+      var notesInClone = clone.querySelectorAll('.notes');
+      for (var n = 0; n < notesInClone.length; n++) notesInClone[n].remove();
+
+      box.appendChild(clone);
+
+      var num = document.createElement('span');
+      num.className = 'thumb-num';
+      num.textContent = i + 1;
+
+      btn.appendChild(box);
+      btn.appendChild(num);
+      btn.addEventListener('click', function () {
+        go(i);
+        closeOverview();
+      });
+
+      frag.appendChild(btn);
+    });
+
+    elOvGrid.appendChild(frag);
+    overviewBuilt = true;
+  }
+
+  function openOverview() {
+    buildOverview();
+    elOverview.hidden = false;
+    closeNotes();
+    elHelp.hidden = true;
+
+    var thumbs = elOvGrid.querySelectorAll('.thumb');
+    for (var t = 0; t < thumbs.length; t++) {
+      thumbs[t].classList.toggle('current', t === cur);
+    }
+    var active = elOvGrid.querySelector('.thumb.current');
+    if (active && active.scrollIntoView) {
+      active.scrollIntoView({ block: 'nearest' });
+    }
+  }
+  function closeOverview() { elOverview.hidden = true; }
+
+  /* ============================================================
+     FULLSCREEN
+     ============================================================ */
+  function toggleFullscreen() {
+    var doc = document;
+    var el = doc.documentElement;
+    var isFs = doc.fullscreenElement || doc.webkitFullscreenElement;
+
+    if (!isFs) {
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    } else {
+      if (doc.exitFullscreen) doc.exitFullscreen();
+      else if (doc.webkitExitFullscreen) doc.webkitExitFullscreen();
+    }
+  }
+
+  /* ============================================================
+     AUTO-HIDE UI
+     ============================================================ */
+  function showUI() {
+    document.body.classList.remove('hide-ui');
+    clearTimeout(hideTimer);
+    if (!uiPinned) {
+      hideTimer = setTimeout(function () {
+        if (!uiPinned && elNotesPanel.hidden && elOverview.hidden && elHelp.hidden) {
+          document.body.classList.add('hide-ui');
+        }
+      }, 3200);
+    }
+  }
+
+  function toggleUI() {
+    uiPinned = !uiPinned;
+    if (uiPinned) {
+      clearTimeout(hideTimer);
+      document.body.classList.remove('hide-ui');
+    } else {
+      showUI();
+    }
+    try { localStorage.setItem('rs_pinned', uiPinned ? '1' : '0'); } catch (e) {}
+  }
+
+  /* ============================================================
+     SLIDE RESET (for games)
+     ============================================================ */
+  function resetSlide(i) {
+    var slide = slides[i];
+    if (!slide) return;
+
+    var answers = slide.querySelectorAll('.answer');
+    for (var a = 0; a < answers.length; a++) answers[a].classList.add('is-hidden');
+
+    var reveals = slide.querySelectorAll('.btn-reveal');
+    for (var r = 0; r < reveals.length; r++) reveals[r].textContent = 'Show Answer';
+
+    var opts = slide.querySelectorAll('.opt');
+    for (var o = 0; o < opts.length; o++) {
+      opts[o].classList.remove('correct', 'wrong');
+      opts[o].disabled = false;
+    }
+
+    var fbs = slide.querySelectorAll('.feedback');
+    for (var f = 0; f < fbs.length; f++) {
+      fbs[f].textContent = '';
+      fbs[f].className = 'feedback';
+    }
+
+    var exps = slide.querySelectorAll('.explain');
+    for (var e = 0; e < exps.length; e++) exps[e].classList.add('is-hidden');
+
+    fitSlide(slide);
+  }
+
+  /* ============================================================
+     INTERACTIVE CONTENT (delegated)
+     ============================================================ */
+  deck.addEventListener('click', function (ev) {
+    var target = ev.target;
+
+    /* ---- Show / hide answer (Game 1) ---- */
+    var revealBtn = target.closest ? target.closest('.btn-reveal') : null;
+    if (revealBtn) {
+      var slide = revealBtn.closest('.slide');
+      var answer = slide.querySelector('.answer');
+      if (!answer) return;
+      var hidden = answer.classList.toggle('is-hidden');
+      revealBtn.textContent = hidden ? 'Show Answer' : 'Hide Answer';
+      fitSlide(slide);
+      return;
+    }
+
+    /* ---- Multiple choice (Game 2) ---- */
+    var opt = target.closest ? target.closest('.opt') : null;
+    if (opt && !opt.disabled) {
+      var qSlide = opt.closest('.slide');
+      var isCorrect = opt.getAttribute('data-correct') === 'true';
+
+      var allOpts = qSlide.querySelectorAll('.opt');
+      for (var i = 0; i < allOpts.length; i++) {
+        allOpts[i].disabled = true;
+        if (allOpts[i].getAttribute('data-correct') === 'true') {
+          allOpts[i].classList.add('correct');
+        }
+      }
+      if (!isCorrect) opt.classList.add('wrong');
+
+      var fb = qSlide.querySelector('.feedback');
+      if (fb) {
+        fb.textContent = isCorrect
+          ? '✓ Correct!'
+          : '✗ Incorrect — the correct answer is highlighted.';
+        fb.classList.add(isCorrect ? 'ok' : 'no');
+      }
+
+      var exp = qSlide.querySelector('.explain');
+      if (exp) exp.classList.remove('is-hidden');
+
+      fitSlide(qSlide);
+    }
+  });
+
+  /* ============================================================
+     KEYBOARD
+     ============================================================ */
+  document.addEventListener('keydown', function (ev) {
+    // Don't hijack keys while typing
+    var tag = (ev.target && ev.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    switch (ev.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+        ev.preventDefault(); next(); break;
+
+      case 'ArrowLeft':
+      case 'PageUp':
+        ev.preventDefault(); prev(); break;
+
+      case ' ':
+      case 'Spacebar':
+        ev.preventDefault(); next(); break;
+
+      case 'Home':
+        ev.preventDefault(); go(0); break;
+
+      case 'End':
+        ev.preventDefault(); go(total - 1); break;
+
+      case 'f': case 'F':
+        ev.preventDefault(); toggleFullscreen(); break;
+
+      case 'o': case 'O':
+        ev.preventDefault();
+        if (elOverview.hidden) openOverview(); else closeOverview();
+        break;
+
+      case 'n': case 'N':
+        ev.preventDefault();
+        if (elNotesPanel.hidden) openNotes(); else closeNotes();
+        break;
+
+      case 'h': case 'H':
+        ev.preventDefault(); toggleUI(); break;
+
+      case 'r': case 'R':
+        ev.preventDefault(); resetSlide(cur); break;
+
+      case 'Escape':
+        if (!elOverview.hidden) closeOverview();
+        else if (!elNotesPanel.hidden) closeNotes();
+        else if (!elHelp.hidden) elHelp.hidden = true;
+        break;
+
+      default:
+        // 1..9 → jump to slide
+        if (ev.key >= '1' && ev.key <= '9') {
+          go(parseInt(ev.key, 10) - 1);
+        }
+    }
+    showUI();
+  });
+
+  /* ============================================================
+     TOUCH  (swipe left / right)
+     ============================================================ */
+  var touchStartX = 0, touchStartY = 0, touchActive = false;
+
+  document.addEventListener('touchstart', function (ev) {
+    if (ev.touches.length !== 1) return;
+    if (!elOverview.hidden || !elNotesPanel.hidden) return;
+    touchStartX = ev.touches[0].clientX;
+    touchStartY = ev.touches[0].clientY;
+    touchActive = true;
+    showUI();
+  }, { passive: true });
+
+  document.addEventListener('touchend', function (ev) {
+    if (!touchActive) return;
+    touchActive = false;
+    if (!elOverview.hidden || !elNotesPanel.hidden) return;
+
+    var t = ev.changedTouches[0];
+    var dx = t.clientX - touchStartX;
+    var dy = t.clientY - touchStartY;
+
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  /* ============================================================
+     UI WIRING
+     ============================================================ */
+  document.getElementById('btnPrev').addEventListener('click', function () { prev(); showUI(); });
+  document.getElementById('btnNext').addEventListener('click', function () { next(); showUI(); });
+  document.getElementById('btnNotes').addEventListener('click', function () {
+    if (elNotesPanel.hidden) openNotes(); else closeNotes();
+    showUI();
+  });
+  document.getElementById('btnOverview').addEventListener('click', function () {
+    if (elOverview.hidden) openOverview(); else closeOverview();
+    showUI();
+  });
+  document.getElementById('btnFull').addEventListener('click', toggleFullscreen);
+  document.getElementById('btnHide').addEventListener('click', toggleUI);
+  document.getElementById('btnHelp').addEventListener('click', function () {
+    elHelp.hidden = !elHelp.hidden;
+  });
+
+  document.getElementById('notesClose').addEventListener('click', closeNotes);
+  document.getElementById('ovClose').addEventListener('click', closeOverview);
+
+  elOverview.addEventListener('click', function (ev) {
+    if (ev.target === elOverview) closeOverview();
+  });
+  elHelp.addEventListener('click', function (ev) {
+    if (ev.target === elHelp) elHelp.hidden = true;
+  });
+
+  document.addEventListener('mousemove', showUI);
+  document.addEventListener('click', showUI);
+
+  window.addEventListener('resize', function () {
+    layout();
+  });
+  window.addEventListener('orientationchange', function () {
+    setTimeout(layout, 120);
+  });
+
+  /* ============================================================
+     START SCREEN
+     ============================================================ */
+  function dismissStart() {
+    elStart.classList.add('gone');
+    try { sessionStorage.setItem('rs_started', '1'); } catch (e) {}
+    showUI();
+  }
+
+  document.getElementById('btnStart').addEventListener('click', dismissStart);
+  elStart.addEventListener('click', function (ev) {
+    if (ev.target === elStart) dismissStart();
+  });
+
+  /* ============================================================
+     BOOT
+     ============================================================ */
+  function boot() {
+    layout();
+
+    // 1) Auto-fit every slide so nothing ever overflows
+    fitAll();
+
+    // 2) Re-fit once fonts / layout are stable
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        fitAll();
+        buildOverview();
+      });
+    } else {
+      setTimeout(function () { fitAll(); buildOverview(); }, 60);
+    }
+
+    // 3) Restore preferences
+    var saved = 0;
+    try { saved = parseInt(localStorage.getItem('rs_slide') || '0', 10) || 0; } catch (e) {}
+    if (saved < 0 || saved >= total) saved = 0;
+
+    try { uiPinned = localStorage.getItem('rs_pinned') === '1'; } catch (e) {}
+
+    go(saved);
+
+    // 4) Start screen
+    var started = false;
+    try { started = sessionStorage.getItem('rs_started') === '1'; } catch (e) {}
+    if (started) {
+      elStart.classList.add('gone');
+      showUI();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+</body>
+</html>
