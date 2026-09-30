@@ -27,6 +27,12 @@
 }
 
 *{box-sizing:border-box;}
+
+/* FIX #1: các phần tử có thuộc tính [hidden] phải luôn bị ẩn.
+   Trước đây #overview/#notesPanel dùng display:flex nên ghi đè
+   [hidden] do specificity của ID cao hơn attribute selector. */
+[hidden]{display:none !important;}
+
 html,body{height:100%;margin:0;}
 body{
   font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
@@ -36,6 +42,9 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
+
+/* FIX #5: tránh double-tap zoom trên các phần tử tương tác (mobile) */
+.cbtn,.opt,.btn-reveal,.xbtn,.thumb,#btnStart{touch-action:manipulation;}
 
 /* ============================================================
    1. STAGE + DECK
@@ -403,11 +412,17 @@ body.hide-ui #progress{opacity:0;}
 #notesPanel header{
   display:flex;align-items:center;gap:.6rem;
   padding:1rem 1.1rem;border-bottom:1px solid var(--line);
+  flex:0 0 auto;
 }
 #notesPanel h3{margin:0;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-700);}
 #notesSlide{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.08em;}
 #notesPanel header .spacer{flex:1;}
-#notesBody{padding:1.1rem;overflow-y:auto;font-size:.95rem;line-height:1.6;color:var(--navy-soft);}
+/* FIX #2: notes body phải flex-grow & min-height:0 để cuộn đúng */
+#notesBody{
+  padding:1.1rem;overflow-y:auto;
+  flex:1 1 auto;min-height:0;
+  font-size:.95rem;line-height:1.6;color:var(--navy-soft);
+}
 #notesBody b{color:var(--navy);}
 
 .xbtn{
@@ -428,6 +443,7 @@ body.hide-ui #progress{opacity:0;}
 #overview header{
   display:flex;align-items:center;gap:1rem;
   padding:1rem 1.5rem;border-bottom:1px solid var(--line);
+  flex:0 0 auto;
 }
 #overview h3{margin:0;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-700);}
 #overview header .spacer{flex:1;}
@@ -443,24 +459,31 @@ body.hide-ui #progress{opacity:0;}
   border:none;background:transparent;padding:0;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;gap:.45rem;
 }
+/* FIX #4: dùng box-shadow thay border để vùng nội dung đúng 208×147 */
 .thumb-box{
   position:relative;width:208px;height:147px;overflow:hidden;
-  border-radius:6px;border:2px solid var(--line);background:#fff;
-  box-shadow:0 4px 14px rgba(20,41,63,.10);
-  transition:border-color .15s, transform .15s, box-shadow .15s;
+  border-radius:6px;background:#fff;
+  box-shadow:0 0 0 2px var(--line), 0 4px 14px rgba(20,41,63,.10);
+  transition:box-shadow .15s, transform .15s;
 }
-.thumb:hover .thumb-box{border-color:var(--blue-500);transform:translateY(-2px);box-shadow:0 10px 24px rgba(20,41,63,.16);}
-.thumb.current .thumb-box{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.thumb:hover .thumb-box{
+  box-shadow:0 0 0 2px var(--blue-500), 0 10px 24px rgba(20,41,63,.16);
+  transform:translateY(-2px);
+}
+.thumb.current .thumb-box{
+  box-shadow:0 0 0 3px var(--accent), 0 4px 14px rgba(20,41,63,.10);
+}
 .thumb-num{
   font-size:.78rem;font-weight:800;color:var(--blue-700);
   font-variant-numeric:tabular-nums;
 }
+/* FIX #3: bỏ inset:auto !important gây xung đột; dùng giá trị rõ ràng */
 #overview .slide{
-  position:absolute !important;top:0 !important;left:0 !important;
-  inset:auto !important;
-  width:1280px !important;height:905px !important;
+  position:absolute;
+  top:0;left:0;right:auto;bottom:auto;
+  width:1280px;height:905px;
   transform:scale(.1625);transform-origin:top left;
-  opacity:1 !important;visibility:visible !important;
+  opacity:1;visibility:visible;
   border-radius:0;box-shadow:none;transition:none;
   pointer-events:none;
 }
@@ -517,7 +540,7 @@ kbd{
   #counter{min-width:3.9rem;font-size:.78rem;}
   .divider{display:none;}
   #ovGrid{padding:1rem;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
-  .thumb-box{width:158px;height:111.7px;}
+  .thumb-box{width:158px;height:112px;}
   #overview .slide{transform:scale(.1234);}
 }
 
@@ -2204,8 +2227,10 @@ kbd{
   var SW = 1280;          // slide design width  (px)
   var SH = 905;           // slide design height (px)  → 1.414 : 1
   var BASE_FS = 21;       // base slide font-size at 100 %
+
+  // FIX #5b: mở rộng dải scale để auto-fit an toàn hơn với slide dày đặc
   var SCALES = [1, .96, .92, .88, .85, .82, .79, .76, .73, .70,
-                .67, .64, .61, .58, .55, .52, .50];
+                .67, .64, .61, .58, .55, .52, .50, .48, .46];
 
   var deck      = document.getElementById('deck');
   var slides    = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
@@ -2225,7 +2250,7 @@ kbd{
   var elStart      = document.getElementById('startScreen');
 
   /* ============================================================
-     AUTO-FIT  —  everything must fit inside one A4 landscape slide
+     AUTO-FIT  —  mọi nội dung phải nằm gọn trong 1 slide A4
      ============================================================ */
   function isOverflowing(body) {
     return body.scrollHeight > body.clientHeight + 1 ||
@@ -2240,8 +2265,8 @@ kbd{
       slide.style.fontSize = (BASE_FS * SCALES[i]) + 'px';
       if (!isOverflowing(body)) return;
     }
-    // Last resort: smallest readable size (never below 10.5px)
-    slide.style.fontSize = (BASE_FS * 0.5) + 'px';
+    // Ngưỡng nhỏ nhất chấp nhận được (~9.66px) — không xuống thấp hơn.
+    slide.style.fontSize = (BASE_FS * 0.46) + 'px';
   }
 
   function fitAll() {
@@ -2249,7 +2274,7 @@ kbd{
   }
 
   /* ============================================================
-     DECK SCALING  (A4 landscape ratio is always preserved)
+     DECK SCALING  (giữ nguyên tỉ lệ A4 landscape)
      ============================================================ */
   function layout() {
     var vw = window.innerWidth;
@@ -2281,7 +2306,7 @@ kbd{
 
     updateNotes();
 
-    // highlight current thumbnail
+    // highlight thumbnail hiện tại
     var thumbs = elOvGrid.querySelectorAll('.thumb');
     for (var t = 0; t < thumbs.length; t++) {
       thumbs[t].classList.toggle('current', t === cur);
@@ -2415,7 +2440,7 @@ kbd{
   }
 
   /* ============================================================
-     SLIDE RESET (for games)
+     SLIDE RESET (dùng cho game)
      ============================================================ */
   function resetSlide(i) {
     var slide = slides[i];
@@ -2497,7 +2522,6 @@ kbd{
      KEYBOARD
      ============================================================ */
   document.addEventListener('keydown', function (ev) {
-    // Don't hijack keys while typing
     var tag = (ev.target && ev.target.tagName) || '';
     if (tag === 'INPUT' || tag === 'TEXTAREA') return;
 
@@ -2546,7 +2570,6 @@ kbd{
         break;
 
       default:
-        // 1..9 → jump to slide
         if (ev.key >= '1' && ev.key <= '9') {
           go(parseInt(ev.key, 10) - 1);
         }
@@ -2614,9 +2637,7 @@ kbd{
   document.addEventListener('mousemove', showUI);
   document.addEventListener('click', showUI);
 
-  window.addEventListener('resize', function () {
-    layout();
-  });
+  window.addEventListener('resize', function () { layout(); });
   window.addEventListener('orientationchange', function () {
     setTimeout(layout, 120);
   });
@@ -2641,10 +2662,10 @@ kbd{
   function boot() {
     layout();
 
-    // 1) Auto-fit every slide so nothing ever overflows
+    // 1) Auto-fit mọi slide để không bao giờ tràn
     fitAll();
 
-    // 2) Re-fit once fonts / layout are stable
+    // 2) Fit lại sau khi font/layout ổn định
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
         fitAll();
@@ -2654,7 +2675,7 @@ kbd{
       setTimeout(function () { fitAll(); buildOverview(); }, 60);
     }
 
-    // 3) Restore preferences
+    // 3) Khôi phục tuỳ chọn
     var saved = 0;
     try { saved = parseInt(localStorage.getItem('rs_slide') || '0', 10) || 0; } catch (e) {}
     if (saved < 0 || saved >= total) saved = 0;
